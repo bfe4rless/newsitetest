@@ -128,29 +128,34 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* socials bubble */
+/* socials bubble fixed */
 .socials {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 12px;
   margin-top: 15px;
 }
+
 .social-bubble {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
   width: 60px;
   height: 60px;
-  background: rgba(255,255,255,0.08);
   border-radius: 50%;
+  background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: transform 0.2s ease, background 0.2s ease;
 }
+
 .social-bubble img {
   width: 30px;
   height: 30px;
+  object-fit: contain;
 }
+
 .social-bubble:hover {
   transform: scale(1.15);
   background: rgba(255,255,255,0.15);
@@ -260,12 +265,17 @@ h1 {
       <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024" alt="Profile">
       <h1>xtroas</h1>
     </a>
-    <div class="discord-username">@acivila</div>
-    <div class="discord-username">If you need to contact me, text me on discord/telegram.</div>
+    <div class="discord-username">@acivila - @xtroasperson</div>
+    <div class="discord-username">If you need to contact me, text me on discord/telegram. My discord server below and my tele</div>
 
     <div class="socials">
+      <!-- Telegram -->
       <a href="https://t.me/xtroas" target="_blank" class="social-bubble">
-        <img src="./index_files/telegram.png" alt="Telegram">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+      </a>
+      <!-- Discord Server -->
+      <a href="https://discord.gg/hematite" target="_blank" class="social-bubble">
+        <img src="https://freelogopng.com/images/all_img/1691730813discord-icon-png.png" alt="Discord">
       </a>
     </div>
   </div>
@@ -295,11 +305,10 @@ const cursor = document.getElementById('cursor');
 const card = document.getElementById('card');
 const music = document.getElementById('bg-music');
 
-// Click to enter (play music)
+// Click to enter
 gate.addEventListener('click', () => {
   gate.classList.add('hide');
   app.classList.remove('blurred');
-
   musicBar.classList.add('active');
   music.volume = parseFloat(volumeSlider.value);
   music.play().catch(() => console.log("User interaction required to play audio"));
