@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0023)https://www.xtroas.xyz/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@xtroas</title>
 <link rel="icon" href="https://www.xtroas.xyz/favicon.ico">
@@ -93,19 +93,14 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-
-  /* Softer glass */
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(6px);
-
   border-radius: 20px;
   padding: 30px 40px;
   width: 90%;
   max-width: 500px;
-
-  border: 1px solid rgba(255,255,255,0.08); /* subtle edge */
-  box-shadow: 0 10px 40px rgba(0,0,0,0.25); /* softer shadow */
-
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
 }
@@ -139,6 +134,7 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* SOCIALS */
 .socials {
   display: flex;
   justify-content: center;
@@ -146,14 +142,28 @@ h1 {
   margin-top: 15px;
 }
 
-.socials img {
-  width: 45px;
-  height: 45px;
-  transition: 0.2s;
+/* Telegram bubble */
+.bubble {
+  width: 60px;
+  height: 60px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: 0.25s ease;
 }
 
-.socials img:hover {
-  filter: brightness(1.2);
+.bubble img {
+  width: 32px;
+  height: 32px;
+}
+
+.bubble:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.4);
 }
 
 /* Custom Cursor */
@@ -188,8 +198,6 @@ h1 {
   border-top: 1px solid rgba(255,255,255,0.12);
   backdrop-filter: blur(8px);
   z-index: 20;
-
-  /* hidden until click-to-enter */
   opacity: 0;
   pointer-events: none;
   transition: opacity .35s ease;
@@ -253,8 +261,8 @@ h1 {
 <body>
 
 <!-- VIDEO -->
-<video id="bgVideo" muted="" loop="" playsinline="">
-  <source src="background.mp4" type="video/mp4">
+<video id="bgVideo" muted loop playsinline>
+  <source src="https://files.catbox.moe/ph93qq.mp4" type="video/mp4">
 </video>
 
 <div id="gate" class="gate hide">
@@ -266,9 +274,9 @@ h1 {
 <div id="app" class="app">
   <div class="overlay"></div>
 
-  <div class="card" id="card" style="transform: rotateY(-0.023511deg) rotateX(0.459184deg);">
+  <div class="card" id="card">
     <a class="profile-link" href="https://discord.com/users/1239153644625199155" target="_blank">
-      <img class="profile-pic" id="discordAvatar" src="./index_files/2e3cf6609d2e3b20554ba5c401c9dc48.webp" alt="Profile">
+      <img class="profile-pic" id="discordAvatar" src="" alt="Profile">
       <h1>xtroas</h1>
     </a>
 
@@ -276,7 +284,7 @@ h1 {
     <div class="discord-username" id="discordStatus">If you need to contact me, text me on discord/telegram.</div>
 
     <div class="socials">
-      <a href="https://t.me/xtroas" target="_blank">
+      <a href="https://t.me/xtroas" target="_blank" class="bubble">
         <img src="./index_files/telegram.png" alt="Telegram">
       </a>
     </div>
@@ -284,21 +292,19 @@ h1 {
 </div>
 
 <!-- Audio element for background music -->
-<audio id="bg-music" src="music.mp3" preload="auto" loop=""></audio>
+<audio id="bg-music" src="https://files.catbox.moe/3laaw2.mp3" preload="auto" loop></audio>
 
 <!-- Bottom music bar -->
 <div class="music-bar active" id="musicBar" aria-label="Background music controls">
-  <button id="music-toggle" class="music-button">
-    Pause music
-  </button>
+  <button id="music-toggle" class="music-button">Pause music</button>
 
   <div id="volume-wrap" class="slider-container visible" aria-hidden="false">
     <span class="volume-label">Volume</span>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" aria-label="Music volume">
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
   </div>
 </div>
 
-<div class="custom-cursor hover" id="cursor" style="left: 1272px; top: 598px;"></div>
+<div class="custom-cursor hover" id="cursor"></div>
 
 <script>
 const gate = document.getElementById('gate');
@@ -321,7 +327,6 @@ gate.addEventListener('click', () => {
   gate.classList.add('hide');
   app.classList.remove('blurred');
 
-  // show bar + start audio/video (allowed after user gesture)
   musicBar.classList.add('active');
   music.play().catch(() => {});
   bgVideo.play().catch(() => {});
@@ -358,17 +363,14 @@ document.querySelectorAll('a, button, input').forEach(el => {
   el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
 
-/* ===== STATIC "DISCORD" INFO (NO API) ===== */
+/* Static Discord info */
 document.getElementById('discordName').textContent = '@acivila';
-
 document.getElementById('discordAvatar').src =
   'https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024';
 
-/* Bio stays normal (static text) */
 document.getElementById('discordStatus').innerHTML =
   'If you need to contact me, text me on discord/telegram.';
 </script>
 
-
-
-</body></html>
+</body>
+</html>
