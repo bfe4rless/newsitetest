@@ -7,12 +7,10 @@
 <link rel="icon" href="https://www.xtroas.xyz/favicon.ico">
 
 <style>
-/* This website was made by @af5p on discord */
 *, *::before, *::after {
   cursor: none !important;
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   height: 100vh;
@@ -26,23 +24,26 @@ body {
   background: #000;
 }
 
-/* VIDEO BACKGROUND */
-#bgVideo {
+/* YT BACKGROUND VIDEO */
+.video-background {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   z-index: -2;
+  overflow: hidden;
+}
+.video-background iframe {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  pointer-events: none;
 }
 
+/* REST OF YOUR STYLES (CARD, GATE, CURSOR, MUSIC UI) */
 .overlay {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(0,0,0,0.4);
   backdrop-filter: blur(3px);
 }
-
 .app {
   position: relative;
   height: 100vh;
@@ -52,325 +53,204 @@ body {
   align-items: center;
   perspective: 1000px;
 }
-
 .blurred {
   filter: blur(14px);
   pointer-events: none;
   user-select: none;
 }
-
 .gate {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(6px);
   z-index: 50;
 }
-
 .gate.hide {
   opacity: 0;
   visibility: hidden;
   transition: opacity .35s ease, visibility .35s step-end;
 }
-
 .gate-inner {
-  padding: 28px 36px;
-  border-radius: 18px;
+  padding: 28px 36px; border-radius: 18px;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.15);
   box-shadow: 0 20px 80px rgba(0,0,0,0.4);
   text-align: center;
 }
-
-.gate-title {
-  font-size: clamp(22px, 4vw, 32px);
-  font-weight: 800;
-}
+.gate-title { font-size: clamp(22px, 4vw, 32px); font-weight: 800; }
 
 .card {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.04);
+  position: relative; z-index: 2; text-align: center;
+  background: rgba(255,255,255,0.04);
   backdrop-filter: blur(6px);
   border-radius: 20px;
   padding: 30px 40px;
-  width: 90%;
-  max-width: 500px;
+  width: 90%; max-width: 500px;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 10px 40px rgba(0,0,0,0.25);
   transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
 }
 
-.profile-link {
-  text-decoration: none;
-  color: inherit;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
+.profile-link { text-decoration: none; color: inherit; display: inline-flex; flex-direction: column; align-items: center; }
+.profile-pic { width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);margin-bottom:10px; }
+h1 { font-size:1.8em;margin:5px 0;font-weight:700; }
+.discord-username { color:#ccc;font-size:0.95em;margin-bottom:10px; }
 
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.3);
-  margin-bottom: 10px;
-}
-
-h1 {
-  font-size: 1.8em;
-  margin: 5px 0;
-  font-weight: 700;
-}
-
-.discord-username {
-  color: #ccc;
-  font-size: 0.95em;
-  margin-bottom: 10px;
-}
-
-/* SOCIALS */
 .socials {
   display: flex;
   justify-content: center;
   gap: 12px;
   margin-top: 15px;
 }
-
-/* Telegram bubble */
-.bubble {
-  width: 60px;
-  height: 60px;
+.social-bubble {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px; height: 60px;
   background: rgba(255,255,255,0.08);
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 1px solid rgba(255,255,255,0.15);
-  transition: 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
+.social-bubble img { width:30px; height:30px; }
+.social-bubble:hover { transform: scale(1.15); background: rgba(255,255,255,0.15); }
 
-.bubble img {
-  width: 32px;
-  height: 32px;
-}
-
-.bubble:hover {
-  background: rgba(255,255,255,0.18);
-  transform: translateY(-3px);
-  border-color: rgba(255,255,255,0.4);
-}
-
-/* Custom Cursor */
 .custom-cursor {
-  position: fixed;
-  width: 24px;
-  height: 24px;
-  background: url('cursor.png') center / contain no-repeat;
-  pointer-events: none;
+  position: fixed; width:24px; height:24px;
+  background: url('cursor.png') center/contain no-repeat;
+  pointer-events:none;
   transform: translate(-50%, -50%);
-  z-index: 9999;
-  transition: transform 0.08s ease-out, opacity 0.2s;
+  z-index:9999;
+  transition: transform .08s ease-out, opacity .2s;
 }
+.custom-cursor.hover { transform: translate(-50%, -50%) scale(1.3); opacity:0.8; }
 
-.custom-cursor.hover {
-  transform: translate(-50%, -50%) scale(1.3);
-  opacity: 0.8;
-}
-
-/* ===== Music bar (bottom) ===== */
+/* MUSIC BAR */
 .music-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 10px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.65);
-  border-top: 1px solid rgba(255,255,255,0.12);
+  position: fixed; left:0; right:0; bottom:0;
+  padding:10px 16px;
+  display:flex; justify-content:center; align-items:center; gap:12px;
+  background: rgba(0,0,0,0.65);
+  border-top:1px solid rgba(255,255,255,0.12);
   backdrop-filter: blur(8px);
-  z-index: 20;
-  opacity: 0;
-  pointer-events: none;
+  z-index:20;
+  opacity: 0; pointer-events:none;
   transition: opacity .35s ease;
 }
-
-.music-bar.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
+.music-bar.active { opacity:1; pointer-events:auto; }
 .music-button {
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.10);
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  letter-spacing: .2px;
-  transition: background .15s ease, transform .12s ease, border-color .12s ease;
-  white-space: nowrap;
+  border:1px solid rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.10);
+  color:#fff; padding:8px 18px;
+  border-radius:999px; font-size:13px;
+  font-weight:500; cursor:pointer; letter-spacing:.2px;
 }
-
 .music-button:hover {
   background: rgba(255,255,255,0.16);
   border-color: rgba(255,255,255,0.6);
-  transform: translateY(-1px);
 }
 
+/* VOLUME SLIDER */
 .slider-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
+  display:flex; align-items:center; gap:6px;
+  max-width:0; opacity:0; overflow:hidden; pointer-events:none;
   transition: max-width .25s ease, opacity .25s ease;
 }
-
 .slider-container.visible {
-  max-width: 220px;
-  opacity: 1;
-  pointer-events: auto;
+  max-width:220px; opacity:1; pointer-events:auto;
 }
+.volume-label { font-size:11px; color:#d1d5db; white-space:nowrap; }
+#volume-slider { width:140px; cursor:pointer; }
 
-.volume-label {
-  font-size: 11px;
-  color: #d1d5db;
-  white-space: nowrap;
-}
-
-#volume-slider {
-  width: 140px;
-  cursor: pointer;
-}
 </style>
 </head>
-
 <body>
 
-<!-- VIDEO -->
-<video id="bgVideo" muted loop playsinline>
-  <source src="https://files.catbox.moe/ph93qq.mp4" type="video/mp4">
-</video>
-
-<div id="gate" class="gate hide">
-  <div class="gate-inner">
-    <div class="gate-title">Click to enter</div>
-  </div>
+<!-- YOUTUBE BACKGROUND -->
+<div class="video-background">
+  <iframe src="https://www.youtube.com/embed/dcY-rhLpHb4?autoplay=1&mute=1&loop=1&playlist=dcY-rhLpHb4&controls=0&modestbranding=1&rel=0"
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
 </div>
 
-<div id="app" class="app">
-  <div class="overlay"></div>
+<!-- GATE (Click To Enter) -->
+<div id="gate" class="gate">
+  <div class="gate-inner"><div class="gate-title">Click to enter</div></div>
+</div>
 
+<div id="app" class="app blurred">
+  <div class="overlay"></div>
   <div class="card" id="card">
     <a class="profile-link" href="https://discord.com/users/1239153644625199155" target="_blank">
-      <img class="profile-pic" id="discordAvatar" src="" alt="Profile">
+      <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024" alt="Profile">
       <h1>xtroas</h1>
     </a>
-
-    <div class="discord-username" id="discordName">@acivila</div>
-    <div class="discord-username" id="discordStatus">If you need to contact me, text me on discord/telegram.</div>
+    <div class="discord-username">@acivila</div>
+    <div class="discord-username">If you need to contact me, text me on discord/telegram.</div>
 
     <div class="socials">
-      <a href="https://t.me/xtroas" target="_blank" class="bubble">
+      <a href="https://t.me/xtroas" target="_blank" class="social-bubble">
         <img src="./index_files/telegram.png" alt="Telegram">
       </a>
     </div>
   </div>
 </div>
 
-<!-- Audio element for background music -->
-<audio id="bg-music" src="https://files.catbox.moe/3laaw2.mp3" preload="auto" loop></audio>
+<!-- HIDDEN YT AUDIO FOR UNMUTED MUSIC -->
+<iframe id="ytAudio" style="display:none;"
+  src="https://www.youtube.com/embed/dcY-rhLpHb4?autoplay=1&loop=1&playlist=dcY-rhLpHb4&controls=0&modestbranding=1&rel=0">
+</iframe>
 
-<!-- Bottom music bar -->
-<div class="music-bar active" id="musicBar" aria-label="Background music controls">
-  <button id="music-toggle" class="music-button">Pause music</button>
-
-  <div id="volume-wrap" class="slider-container visible" aria-hidden="false">
+<!-- MUSIC BAR -->
+<div class="music-bar" id="musicBar">
+  <button id="music-toggle" class="music-button">Pause Music</button>
+  <div id="volume-wrap" class="slider-container visible">
     <span class="volume-label">Volume</span>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
   </div>
 </div>
 
-<div class="custom-cursor hover" id="cursor"></div>
+<div class="custom-cursor" id="cursor"></div>
 
 <script>
 const gate = document.getElementById('gate');
 const app = document.getElementById('app');
-const card = document.getElementById('card');
-const cursor = document.getElementById('cursor');
-const bgVideo = document.getElementById('bgVideo');
-
-/* Music bar elements */
 const musicBar = document.getElementById('musicBar');
-const music = document.getElementById('bg-music');
 const musicToggle = document.getElementById('music-toggle');
-const volumeWrap = document.getElementById('volume-wrap');
-const volumeSlider = document.getElementById('volume-slider');
+const cursor = document.getElementById('cursor');
+const card = document.getElementById('card');
+const ytAudio = document.getElementById('ytAudio');
 
-/* Initial volume */
-music.volume = parseFloat(volumeSlider.value);
-
+// When user clicks “enter”
 gate.addEventListener('click', () => {
   gate.classList.add('hide');
   app.classList.remove('blurred');
-
   musicBar.classList.add('active');
-  music.play().catch(() => {});
-  bgVideo.play().catch(() => {});
+
+  // unmute background audio
+  ytAudio.contentWindow.postMessage('{"event":"command","func":"unMute"}', '*');
 });
 
+// Pause/play control
+let playing = true;
 musicToggle.addEventListener('click', () => {
-  if (music.paused) {
-    music.play().catch(() => {});
-    musicToggle.textContent = 'Pause music';
-    volumeWrap.classList.add('visible');
-    volumeWrap.setAttribute('aria-hidden', 'false');
-  } else {
-    music.pause();
-    musicToggle.textContent = 'Play music';
-  }
+  playing = !playing;
+  musicToggle.textContent = playing ? "Pause Music" : "Play Music";
+  ytAudio.contentWindow.postMessage(`{"event":"command","func":"${playing ? "playVideo" : "pauseVideo"}"}`, '*');
 });
 
-volumeSlider.addEventListener('input', (e) => {
-  music.volume = parseFloat(e.target.value);
-});
-
+// cursor follow
 document.addEventListener('mousemove', e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 15;
-  const y = (e.clientY / window.innerHeight - 0.5) * -15;
-
-  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-
   cursor.style.left = e.clientX + 'px';
   cursor.style.top = e.clientY + 'px';
 });
-
-document.querySelectorAll('a, button, input').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', ()=>cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', ()=>cursor.classList.remove('hover'));
 });
 
-/* Static Discord info */
-document.getElementById('discordName').textContent = '@acivila';
-document.getElementById('discordAvatar').src =
-  'https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024';
-
-document.getElementById('discordStatus').innerHTML =
-  'If you need to contact me, text me on discord/telegram.';
 </script>
-
 </body>
 </html>
