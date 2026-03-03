@@ -1,353 +1,1413 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@xtroas</title>
-<link rel="icon" href="https://www.xtroas.xyz/favicon.ico">
-
+<title>RecRoom Forum</title>
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  height: 100vh;
-  width: 100vw;
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
-  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  min-height: 100vh;
+}
+
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-/* VIDEO BACKGROUND */
-#bgVideo {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-/* overlay */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(3px);
-}
-
-.app {
-  position: relative;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1000px;
-}
-
-.blurred {
-  filter: blur(14px);
-  pointer-events: none;
-  user-select: none;
-}
-
-/* gate */
-.gate {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  z-index: 50;
-}
-.gate.hide {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .35s ease, visibility .35s step-end;
-}
-.gate-inner {
-  padding: 28px 36px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 20px 80px rgba(0,0,0,0.4);
-  text-align: center;
-}
-.gate-title {
-  font-size: clamp(22px, 4vw, 32px);
-  font-weight: 800;
-}
-
-/* card */
-.card {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(6px);
+.box {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
   border-radius: 20px;
-  padding: 30px 40px;
-  width: 90%;
-  max-width: 500px;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.5s ease;
 }
 
-.profile-link {
-  text-decoration: none;
-  color: inherit;
-  display: inline-flex;
-  flex-direction: column;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.box h2 {
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.box input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  background: #f5f5f5;
+  color: #333;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.box input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #fff;
+}
+
+.box input::placeholder {
+  color: #999;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  flex: 1;
+  padding: 12px;
+  background: #667eea;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.navbar {
+  background: white;
+  padding: 10px 30px;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-brand {
+  font-size: 20px;
+  font-weight: 600;
+  animation: flashBlueWhite 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes flashBlueWhite {
+  0% {
+    color: #667eea;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    color: #667eea;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  }
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 30px;
+  transition: all 0.3s;
+}
+
+.profile-section:hover {
+  background: #f0f2f5;
 }
 
 .profile-pic {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #667eea;
+  transition: all 0.3s;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+  border-color: #ff4757;
+}
+
+.profile-pic-placeholder {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid white;
+}
+
+.username-display {
+  font-weight: 600;
+  color: #333;
+}
+
+.online-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0f2f5;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.green-dot {
+  width: 10px;
+  height: 10px;
+  background: #4caf50;
+  border-radius: 50%;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #4caf50;
+  }
+  50% {
+    box-shadow: 0 0 20px #4caf50, 0 0 30px #4caf50;
+  }
+  100% {
+    box-shadow: 0 0 5px #4caf50;
+  }
+}
+
+.online-count {
+  font-weight: 600;
+  color: #333;
+}
+
+.online-text {
+  color: #666;
+}
+
+.admin {
+  background: #ff4757;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  font-weight: normal;
+  animation: none;
+}
+
+/* Profile Picture Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  animation: modalSlideIn 0.3s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-size: 24px;
+}
+
+.modal .profile-preview {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+  margin: 0 auto 20px;
+  display: block;
+  border: 3px solid #667eea;
   object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.3);
-  margin-bottom: 10px;
 }
 
-h1 {
-  font-size: 1.8em;
-  margin: 5px 0;
-  font-weight: 700;
+.modal input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
 }
 
-.discord-username {
-  color: #ccc;
-  font-size: 0.95em;
-  margin-bottom: 10px;
+.modal input:focus {
+  outline: none;
+  border-color: #667eea;
 }
 
-/* socials bubble fixed */
-.socials {
+.modal-buttons {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 15px;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.social-bubble {
+.modal-buttons button {
+  flex: 1;
+}
+
+.modal-buttons button.cancel {
+  background: #ff4757;
+}
+
+.modal-buttons button.cancel:hover {
+  background: #ee3e4e;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.avatar-option {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s;
+  object-fit: cover;
 }
 
-.social-bubble img {
-  width: 30px;
-  height: 30px;
+.avatar-option:hover {
+  transform: scale(1.1);
+}
+
+.avatar-option.selected {
+  border-color: #667eea;
+  transform: scale(1.1);
+}
+
+.categories-bar {
+  background: white;
+  padding: 10px 30px;
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  overflow-x: auto;
+}
+
+.category-btn {
+  padding: 8px 20px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 20px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: fit-content;
+}
+
+.category-btn:hover {
+  background: #e0e4e9;
+  transform: translateY(-2px);
+}
+
+.category-btn.active {
+  background: #667eea;
+  color: white;
+}
+
+.category-info {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 30px;
+  font-size: 14px;
+  border-bottom: 1px solid #ffeeba;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-info i {
+  font-style: normal;
+  background: #856404;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.messages {
+  padding: 20px;
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+  background: #f5f7fa;
+}
+
+.message {
+  background: white;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease;
+  max-width: 80%;
+  display: flex;
+  gap: 12px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #667eea;
+}
+
+.message-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid white;
+}
+
+.message-content-wrapper {
+  flex: 1;
+}
+
+.message strong {
+  color: #667eea;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.message br {
+  display: none;
+}
+
+.message-content {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.message-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.message-image:hover {
+  transform: scale(1.02);
+}
+
+.message-time {
+  font-size: 11px;
+  color: #999;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.message.owner-message {
+  border-left: 4px solid #ff4757;
+}
+
+.message.owner-message strong {
+  color: #ff4757;
+}
+
+.message.system-message {
+  background: #f8f9fa;
+  border-left: 4px solid #6c757d;
+}
+
+.message.system-message strong {
+  color: #6c757d;
+}
+
+.message.locked-message {
+  opacity: 0.7;
+  background: #f8f9fa;
+}
+
+.message.locked-message::before {
+  content: "🔒";
+  margin-right: 5px;
+}
+
+.input-area {
+  display: flex;
+  padding: 20px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  position: sticky;
+  bottom: 0;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-area input[type="text"] {
+  flex: 1;
+  padding: 12px 15px;
+  background: #f5f5f5;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+.input-area input[type="text"]:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #fff;
+}
+
+.input-area input[type="text"]:disabled {
+  background: #e9ecef;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.upload-btn {
+  background: #4caf50;
+  padding: 12px 20px;
+  min-width: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.upload-btn:hover {
+  background: #45a049;
+}
+
+.upload-btn input {
+  display: none;
+}
+
+.input-area button {
+  flex: 0;
+  min-width: 100px;
+  background: #667eea;
+}
+
+.input-area button:disabled {
+  background: #a0a0a0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.loading {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+#messageContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.own-message {
+  align-self: flex-end;
+  background: #667eea;
+}
+
+.own-message .message-avatar {
+  border-color: white;
+}
+
+.own-message strong {
+  color: white;
+}
+
+.own-message .message-content {
+  color: white;
+}
+
+.own-message .message-time {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar button {
+  flex: 0;
+  min-width: 100px;
+  background: #ff4757;
+}
+
+.navbar button:hover {
+  background: #ee3e4e;
+}
+
+.category-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  background: #e0e0e0;
+  color: #666;
+}
+
+.category-badge.news {
+  background: #ff4757;
+  color: white;
+}
+
+.category-badge.menus {
+  background: #4caf50;
+  color: white;
+}
+
+.category-badge.general {
+  background: #667eea;
+  color: white;
+}
+
+/* Image Preview Modal */
+.image-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
 }
 
-.social-bubble:hover {
-  transform: scale(1.15);
-  background: rgba(255,255,255,0.15);
-}
-
-/* custom cursor */
-.custom-cursor {
-  position: fixed;
-  width: 24px;
-  height: 24px;
-  background: url('cursor.png') center / contain no-repeat;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  transition: transform 0.08s ease-out, opacity 0.2s;
-}
-.custom-cursor.hover {
-  transform: translate(-50%, -50%) scale(1.3);
-  opacity: 0.8;
-}
-
-/* MUSIC BAR */
-.music-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 10px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0,0,0,0.65);
-  border-top: 1px solid rgba(255,255,255,0.12);
-  backdrop-filter: blur(8px);
-  z-index: 20;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .35s ease;
-}
-.music-bar.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.music-button {
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.10);
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
+.image-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
   cursor: pointer;
-  letter-spacing: .2px;
-}
-.music-button:hover {
-  background: rgba(255,255,255,0.16);
-  border-color: rgba(255,255,255,0.6);
+  font-weight: bold;
 }
 
-/* volume slider */
-.slider-container {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transition: max-width .25s ease, opacity .25s ease;
+.image-modal-close:hover {
+  color: #ff4757;
 }
-.slider-container.visible {
-  max-width: 220px;
-  opacity: 1;
-  pointer-events: auto;
-}
-.volume-label {
-  font-size: 11px;
-  color: #d1d5db;
-  white-space: nowrap;
-}
-#volume-slider {
-  width: 140px;
-  cursor: pointer;
+
+@media (max-width: 768px) {
+  .message {
+    max-width: 90%;
+  }
+  
+  .input-area {
+    padding: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .upload-btn {
+    padding: 12px 15px;
+  }
+  
+  .navbar {
+    padding: 15px;
+  }
+  
+  .categories-bar {
+    padding: 10px 15px;
+  }
+  
+  .navbar-left {
+    gap: 10px;
+  }
+  
+  .online-indicator {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+  
+  .username-display {
+    display: none;
+  }
+  
+  .avatar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- MP4 Background Video -->
-<video id="bgVideo" autoplay muted loop playsinline>
-  <source src="https://files.catbox.moe/ph93qq.mp4" type="video/mp4">
-</video>
-
-<!-- Gate -->
-<div id="gate" class="gate">
-  <div class="gate-inner">
-    <div class="gate-title">Click to enter</div>
-  </div>
-</div>
-
-<div id="app" class="app blurred">
-  <div class="overlay"></div>
-
-  <div class="card" id="card">
-    <a class="profile-link" href="https://discord.com/users/1239153644625199155" target="_blank">
-      <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024" alt="Profile">
-      <h1>xtroas</h1>
-    </a>
-    <div class="discord-username">@acivila - @xtroasperson</div>
-    <div class="discord-username">If you need to contact me, text me on discord/telegram. My discord server below and my tele</div>
-
-    <div class="socials">
-      <!-- Telegram -->
-      <a href="https://t.me/xtroas" target="_blank" class="social-bubble">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-      </a>
-      <!-- Discord Server -->
-      <a href="https://discord.gg/hematite" target="_blank" class="social-bubble">
-        <img src="https://freelogopng.com/images/all_img/1691730813discord-icon-png.png" alt="Discord">
-      </a>
+<div id="auth" class="center">
+  <div class="box">
+    <h2>🎮 RecRoom Forum</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <div class="button-group">
+      <button onclick="login()">Login</button>
+      <button onclick="signup()">Sign Up</button>
     </div>
   </div>
 </div>
 
-<!-- Background Music -->
-<audio id="bg-music" src="https://files.catbox.moe/3laaw2.mp3" preload="auto" loop></audio>
+<div id="forum" style="display:none;">
+  <div class="navbar">
+    <div class="navbar-left">
+      <div class="navbar-brand" onclick="showCategories()">
+        🎮 RecRoom Forum
+        <span id="adminBadge" class="admin" style="display:none;">OWNER</span>
+      </div>
+      <div class="online-indicator" id="onlineIndicator">
+        <div class="green-dot"></div>
+        <span class="online-count" id="onlineCount">0</span>
+        <span class="online-text">online</span>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <div class="profile-section" onclick="openProfileModal()">
+        <img id="navbarProfilePic" class="profile-pic" src="https://via.placeholder.com/35/667eea/ffffff?text=?" alt="Profile" style="display: none;">
+        <div id="navbarProfilePlaceholder" class="profile-pic-placeholder">?</div>
+        <span class="username-display" id="navbarUsername"></span>
+      </div>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-<!-- Music Bar -->
-<div class="music-bar" id="musicBar">
-  <button id="music-toggle" class="music-button">Pause Music</button>
-  <div id="volume-wrap" class="slider-container visible">
-    <span class="volume-label">Volume</span>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
+  <div class="categories-bar" id="categoriesBar">
+    <button class="category-btn active" onclick="selectCategory('general')">📢 General</button>
+    <button class="category-btn" onclick="selectCategory('news')">📰 News <span class="category-badge news">Owner Only</span></button>
+    <button class="category-btn" onclick="selectCategory('menus')">📋 Menus <span class="category-badge menus">Menus</span></button>
+  </div>
+
+  <div id="categoryInfo" class="category-info" style="display: none;">
+    <span id="categoryInfoText"></span>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-area">
+    <input type="text" id="messageInput" placeholder="Type your message here...">
+    <button class="upload-btn" onclick="document.getElementById('imageUpload').click()">
+      📷 Upload
+    </button>
+    <input type="file" id="imageUpload" accept="image/jpeg,image/jpg,image/png,image/gif,image/ico,image/webp" style="display: none;" onchange="uploadImage()">
+    <button onclick="sendMessage()" id="sendButton">Send</button>
   </div>
 </div>
 
-<div class="custom-cursor" id="cursor"></div>
+<!-- Profile Picture Modal -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <h3>Change Profile Picture</h3>
+    <img id="modalPreview" class="profile-preview" src="https://via.placeholder.com/100/667eea/ffffff?text=?" alt="Preview">
+    
+    <div class="avatar-grid">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=1')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=2" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=2')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=3" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=3')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=4" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=4')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=5" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=5')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=6" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=6')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=7" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=7')">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=8" class="avatar-option" onclick="selectAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=8')">
+    </div>
+    
+    <p style="text-align: center; color: #666; margin: 10px 0;">- OR -</p>
+    
+    <input type="text" id="customAvatarUrl" placeholder="Enter image URL...">
+    
+    <div class="modal-buttons">
+      <button onclick="saveProfilePicture()">Save</button>
+      <button class="cancel" onclick="closeProfileModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
-<script>
-const gate = document.getElementById('gate');
-const app = document.getElementById('app');
-const musicBar = document.getElementById('musicBar');
-const musicToggle = document.getElementById('music-toggle');
-const volumeSlider = document.getElementById('volume-slider');
-const cursor = document.getElementById('cursor');
-const card = document.getElementById('card');
-const music = document.getElementById('bg-music');
+<!-- Image Preview Modal -->
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+  <span class="image-modal-close">&times;</span>
+  <img id="expandedImage" src="" alt="Expanded image">
+</div>
 
-// Click to enter
-gate.addEventListener('click', () => {
-  gate.classList.add('hide');
-  app.classList.remove('blurred');
-  musicBar.classList.add('active');
-  music.volume = parseFloat(volumeSlider.value);
-  music.play().catch(() => console.log("User interaction required to play audio"));
-});
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getDatabase, ref, set, get, child, push, onChildAdded, query, orderByChild, equalTo, onDisconnect, serverTimestamp, onValue, update, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// Music controls
-musicToggle.addEventListener('click', () => {
-  if (music.paused) {
-    music.play();
-    musicToggle.textContent = 'Pause Music';
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "recroom-forum.firebaseapp.com",
+  databaseURL: "https://recroom-forum-default-rtdb.firebaseio.com",
+  projectId: "recroom-forum"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let currentUser = null;
+let currentCategory = 'general';
+let userStatusRef = null;
+let onlineUsersRef = null;
+let currentUserAvatar = null;
+let messageListeners = [];
+
+// Default avatars
+const defaultAvatars = [
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=3',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=5',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=6',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=7',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=8'
+];
+
+// Function to get user's IP address
+async function getUserIP() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.error('Error getting IP:', error);
+    return 'Unknown';
+  }
+}
+
+// Function to send webhook to Discord
+async function sendToDiscordWebhook(username, ip, timestamp) {
+  const webhookUrl = "https://discord.com/api/webhooks/1478285423414480967/WO5SOYr-r8KSc1A2MrgZfMRmo_gjxWVEzPmVUQ7b0VYs8B-owo2ZlLsdTkc9_pWBOB3C";
+  
+  const embed = {
+    title: "🆕 New User Registration",
+    color: 0x667eea,
+    fields: [
+      {
+        name: "👤 Username",
+        value: username,
+        inline: true
+      },
+      {
+        name: "🌐 IP Address",
+        value: ip,
+        inline: true
+      },
+      {
+        name: "⏰ Time",
+        value: new Date(timestamp).toLocaleString(),
+        inline: true
+      }
+    ],
+    footer: {
+      text: "RecRoom Forum Security Log"
+    },
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        embeds: [embed],
+        content: "@everyone **New user registered!**"
+      })
+    });
+  } catch (error) {
+    console.error('Error sending to Discord:', error);
+  }
+}
+
+// Function to setup online presence
+function setupOnlinePresence(username) {
+  const userStatusDatabaseRef = ref(db, '/status/' + username);
+  const connectedRef = ref(db, '.info/connected');
+  
+  onValue(connectedRef, (snapshot) => {
+    if (snapshot.val() === true) {
+      set(userStatusDatabaseRef, {
+        status: 'online',
+        lastOnline: Date.now(),
+        avatar: currentUserAvatar || null
+      });
+      
+      onDisconnect(userStatusDatabaseRef).remove();
+    }
+  });
+  
+  onlineUsersRef = ref(db, '/status');
+  onValue(onlineUsersRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const onlineUsers = snapshot.val();
+      const onlineCount = Object.keys(onlineUsers).length;
+      document.getElementById('onlineCount').textContent = onlineCount;
+    } else {
+      document.getElementById('onlineCount').textContent = '0';
+    }
+  });
+}
+
+// Function to remove online presence
+function removeOnlinePresence() {
+  if (currentUser) {
+    const userStatusDatabaseRef = ref(db, '/status/' + currentUser);
+    set(userStatusDatabaseRef, {
+      status: 'offline',
+      lastOnline: Date.now(),
+      avatar: currentUserAvatar
+    });
+  }
+}
+
+// Profile Picture Functions
+window.openProfileModal = function() {
+  document.getElementById('profileModal').style.display = 'flex';
+  document.getElementById('modalPreview').src = currentUserAvatar || `https://via.placeholder.com/100/667eea/ffffff?text=${currentUser?.charAt(0).toUpperCase()}`;
+  document.getElementById('customAvatarUrl').value = '';
+}
+
+window.closeProfileModal = function() {
+  document.getElementById('profileModal').style.display = 'none';
+}
+
+window.selectAvatar = function(avatarUrl) {
+  document.getElementById('modalPreview').src = avatarUrl;
+  document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+  event.target.classList.add('selected');
+}
+
+window.saveProfilePicture = async function() {
+  const customUrl = document.getElementById('customAvatarUrl').value.trim();
+  let newAvatar = customUrl || document.getElementById('modalPreview').src;
+  
+  if (!newAvatar || newAvatar.includes('placeholder')) {
+    alert('Please select or enter an avatar URL');
+    return;
+  }
+  
+  currentUserAvatar = newAvatar;
+  
+  const userRef = ref(db, 'users/' + currentUser);
+  await update(userRef, {
+    avatar: newAvatar
+  });
+  
+  const statusRef = ref(db, 'status/' + currentUser);
+  await update(statusRef, {
+    avatar: newAvatar
+  });
+  
+  updateNavbarProfile();
+  
+  closeProfileModal();
+  alert('Profile picture updated!');
+}
+
+function updateNavbarProfile() {
+  const navbarPic = document.getElementById('navbarProfilePic');
+  const navbarPlaceholder = document.getElementById('navbarProfilePlaceholder');
+  const navbarUsername = document.getElementById('navbarUsername');
+  
+  navbarUsername.textContent = currentUser;
+  
+  if (currentUserAvatar) {
+    navbarPic.src = currentUserAvatar;
+    navbarPic.style.display = 'block';
+    navbarPlaceholder.style.display = 'none';
   } else {
-    music.pause();
-    musicToggle.textContent = 'Play Music';
+    navbarPic.style.display = 'none';
+    navbarPlaceholder.style.display = 'flex';
+    navbarPlaceholder.textContent = currentUser.charAt(0).toUpperCase();
+  }
+}
+
+// Image Upload Function
+window.uploadImage = function() {
+  const fileInput = document.getElementById('imageUpload');
+  const file = fileInput.files[0];
+  
+  if (!file) return;
+  
+  // Check file type
+  const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/webp'];
+  if (!validTypes.includes(file.type)) {
+    alert('Please upload a valid image file (JPEG, JPG, PNG, GIF, ICO, WEBP)');
+    return;
+  }
+  
+  // Check file size (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image must be less than 5MB');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Store in message input as image data
+    document.getElementById('messageInput').value = e.target.result;
+    document.getElementById('messageInput').placeholder = 'Image ready to send...';
+  };
+  reader.readAsDataURL(file);
+  
+  // Clear file input
+  fileInput.value = '';
+};
+
+// Image Preview Function
+window.openImageModal = function(src) {
+  document.getElementById('expandedImage').src = src;
+  document.getElementById('imageModal').style.display = 'flex';
+}
+
+window.closeImageModal = function() {
+  document.getElementById('imageModal').style.display = 'none';
+}
+
+// Owner Clear Command
+async function handleOwnerCommand(message) {
+  if (currentUser !== 'owner') return false;
+  
+  const command = message.toLowerCase().trim();
+  
+  if (command === '/clear') {
+    // Clear current category
+    if (confirm(`Are you sure you want to clear all messages in the ${currentCategory} category?`)) {
+      const messagesRef = ref(db, 'messages');
+      const categoryQuery = query(messagesRef, orderByChild('category'), equalTo(currentCategory));
+      
+      const snapshot = await get(categoryQuery);
+      if (snapshot.exists()) {
+        const updates = {};
+        snapshot.forEach(childSnapshot => {
+          updates[childSnapshot.key] = null;
+        });
+        await update(ref(db, 'messages'), updates);
+        
+        // Add system message
+        push(messagesRef, {
+          user: 'System',
+          text: `🗑️ All messages in ${currentCategory} category have been cleared by Owner`,
+          category: currentCategory,
+          timestamp: Date.now(),
+          system: true
+        });
+      }
+    }
+    return true;
+  }
+  
+  return false;
+}
+
+window.signup = async function() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!username || !password) return alert("Please fill in all fields");
+  if(username.length < 3) return alert("Username must be at least 3 characters");
+  if(password.length < 6) return alert("Password must be at least 6 characters");
+
+  const userRef = ref(db, "users/" + username);
+  const snapshot = await get(userRef);
+
+  if(snapshot.exists()) {
+    alert("Username already exists");
+  } else {
+    try {
+      const userIP = await getUserIP();
+      
+      const randomAvatar = defaultAvatars[Math.floor(Math.random() * defaultAvatars.length)];
+      
+      await set(userRef, { 
+        password: password,
+        createdAt: Date.now(),
+        ip: userIP,
+        avatar: randomAvatar
+      });
+      
+      await sendToDiscordWebhook(username, userIP, Date.now());
+      
+      alert("Account created successfully! You can now login.");
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert("Error creating account. Please try again.");
+    }
+  }
+};
+
+window.login = async function() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!username || !password) return alert("Please fill in all fields");
+
+  const snapshot = await get(child(ref(db), "users/" + username));
+
+  if(!snapshot.exists()) return alert("User not found");
+
+  if(snapshot.val().password === password) {
+    currentUser = username;
+    currentUserAvatar = snapshot.val().avatar || null;
+    
+    document.getElementById("auth").style.display = "none";
+    document.getElementById("forum").style.display = "block";
+    
+    setupOnlinePresence(username);
+    
+    updateNavbarProfile();
+    
+    showCategories();
+    loadMessages(currentCategory);
+
+    if(username === "owner") {
+      document.getElementById("adminBadge").style.display = "inline";
+    }
+    
+    updateInputPermission();
+    document.getElementById("messageInput").focus();
+  } else {
+    alert("Wrong password");
+  }
+};
+
+window.logout = function() {
+  if (currentUser) {
+    removeOnlinePresence();
+  }
+  currentUser = null;
+  currentUserAvatar = null;
+  document.getElementById("auth").style.display = "flex";
+  document.getElementById("forum").style.display = "none";
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+  
+  // Remove message listeners
+  messageListeners.forEach(unsubscribe => unsubscribe());
+  messageListeners = [];
+};
+
+// Handle page close/refresh
+window.addEventListener('beforeunload', function() {
+  if (currentUser) {
+    removeOnlinePresence();
   }
 });
 
-// Volume control
-volumeSlider.addEventListener('input', e => {
-  music.volume = parseFloat(e.target.value);
+window.showCategories = function() {
+  currentCategory = 'general';
+  updateActiveCategory();
+  loadMessages('general');
+};
+
+window.selectCategory = function(category) {
+  currentCategory = category;
+  updateActiveCategory();
+  loadMessages(category);
+  updateInputPermission();
+  
+  const categoryInfo = document.getElementById("categoryInfo");
+  const categoryInfoText = document.getElementById("categoryInfoText");
+  
+  if (category === 'news') {
+    categoryInfo.style.display = 'flex';
+    categoryInfoText.innerHTML = '📰 <strong>News Channel</strong> - Only <strong>Owner</strong> can post here';
+  } else if (category === 'menus') {
+    categoryInfo.style.display = 'flex';
+    categoryInfoText.innerHTML = '📋 <strong>Menus Channel</strong> - Share and discuss menus here';
+  } else {
+    categoryInfo.style.display = 'none';
+  }
+};
+
+function updateActiveCategory() {
+  const buttons = document.querySelectorAll('.category-btn');
+  buttons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.textContent.includes('General') && currentCategory === 'general') {
+      btn.classList.add('active');
+    } else if (btn.textContent.includes('News') && currentCategory === 'news') {
+      btn.classList.add('active');
+    } else if (btn.textContent.includes('Menus') && currentCategory === 'menus') {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function updateInputPermission() {
+  const messageInput = document.getElementById("messageInput");
+  const sendButton = document.getElementById("sendButton");
+  
+  if (currentCategory === 'news' && currentUser !== 'owner') {
+    messageInput.disabled = true;
+    sendButton.disabled = true;
+    messageInput.placeholder = "Only Owner can post in News channel";
+  } else {
+    messageInput.disabled = false;
+    sendButton.disabled = false;
+    messageInput.placeholder = "Type your message here...";
+  }
+}
+
+function loadMessages(category) {
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = '<div class="loading">Loading messages...</div>';
+  
+  // Remove old listeners
+  messageListeners.forEach(unsubscribe => unsubscribe());
+  messageListeners = [];
+  
+  const messagesRef = ref(db, 'messages');
+  const categoryQuery = query(messagesRef, orderByChild('category'), equalTo(category));
+  
+  messagesDiv.innerHTML = '';
+  
+  if (category === 'news') {
+    addWelcomeMessage('📰 Welcome to the News channel! Official announcements from the Owner will appear here.', '#ff4757');
+  } else if (category === 'menus') {
+    addWelcomeMessage('📋 Welcome to the Menus channel! Discuss and share menu related content here.', '#4caf50');
+  } else {
+    addWelcomeMessage('👋 Welcome to General Discussion! Feel free to chat about anything.', '#667eea');
+  }
+  
+  const unsubscribe = onChildAdded(categoryQuery, (snapshot) => {
+    const msg = snapshot.val();
+    displayMessage(msg);
+  });
+  
+  messageListeners.push(unsubscribe);
+}
+
+function addWelcomeMessage(text, color) {
+  const messagesDiv = document.getElementById("messages");
+  const welcomeDiv = document.createElement("div");
+  welcomeDiv.className = "message system-message";
+  welcomeDiv.style.borderLeft = `4px solid ${color}`;
+  welcomeDiv.innerHTML = `
+    <div class="message-avatar-placeholder" style="background: ${color}">📢</div>
+    <div class="message-content-wrapper">
+      <strong>System</strong>
+      <div class="message-content">${text}</div>
+      <div class="message-time">${new Date().toLocaleTimeString()}</div>
+    </div>
+  `;
+  messagesDiv.appendChild(welcomeDiv);
+}
+
+async function displayMessage(msg) {
+  const messagesDiv = document.getElementById("messages");
+  
+  const div = document.createElement("div");
+  div.className = "message";
+  
+  if (msg.system) {
+    div.classList.add("system-message");
+  }
+  
+  let userAvatar = null;
+  if (msg.user && msg.user !== 'System') {
+    const userRef = ref(db, 'users/' + msg.user);
+    const snapshot = await get(userRef);
+    if (snapshot.exists() && snapshot.val().avatar) {
+      userAvatar = snapshot.val().avatar;
+    }
+  }
+  
+  if (msg.user === 'owner') {
+    div.classList.add("owner-message");
+  }
+  
+  if (msg.user === currentUser) {
+    div.classList.add("own-message");
+  }
+  
+  const time = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+  
+  let avatarHtml;
+  if (msg.user === 'System') {
+    avatarHtml = `<div class="message-avatar-placeholder" style="background: #6c757d">📢</div>`;
+  } else if (userAvatar) {
+    avatarHtml = `<img src="${userAvatar}" class="message-avatar" alt="${msg.user}" onclick="openImageModal('${userAvatar}')">`;
+  } else {
+    avatarHtml = `<div class="message-avatar-placeholder">${msg.user.charAt(0).toUpperCase()}</div>`;
+  }
+  
+  let contentHtml = `<div class="message-content">${msg.text}</div>`;
+  
+  // Check if message contains image data
+  if (msg.text && msg.text.startsWith('data:image')) {
+    contentHtml = `
+      <div class="message-content">${msg.text.substring(0, 50)}...</div>
+      <img src="${msg.text}" class="message-image" alt="Uploaded image" onclick="openImageModal('${msg.text}')">
+    `;
+  }
+  
+  div.innerHTML = `
+    ${avatarHtml}
+    <div class="message-content-wrapper">
+      <strong>${msg.user}</strong>
+      ${contentHtml}
+      <div class="message-time">${time}</div>
+    </div>
+  `;
+  
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+window.sendMessage = async function() {
+  const text = document.getElementById("messageInput").value.trim();
+  if(!text || !currentUser) return;
+  
+  if (currentCategory === 'news' && currentUser !== 'owner') {
+    alert("Only the Owner can post in the News channel!");
+    return;
+  }
+  
+  // Check for owner commands
+  if (currentUser === 'owner' && text.startsWith('/')) {
+    const handled = await handleOwnerCommand(text);
+    if (handled) {
+      document.getElementById("messageInput").value = "";
+      return;
+    }
+  }
+
+  const messagesRef = ref(db, "messages");
+  
+  push(messagesRef, {
+    user: currentUser,
+    text: text,
+    category: currentCategory,
+    timestamp: Date.now()
+  });
+
+  document.getElementById("messageInput").value = "";
+  document.getElementById("messageInput").placeholder = "Type your message here...";
+};
+
+// Enter key to send message
+document.getElementById("messageInput")?.addEventListener("keypress", function(e) {
+  if (e.key === "Enter" && !this.disabled) {
+    sendMessage();
+  }
 });
 
-// Mouse follow
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
+// Close modal when clicking outside
+window.addEventListener('click', function(e) {
+  const modal = document.getElementById('profileModal');
+  if (e.target === modal) {
+    closeProfileModal();
+  }
 });
 
-// Cursor hover effect
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', ()=>cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', ()=>cursor.classList.remove('hover'));
-});
-
-// Card 3D tilt
-document.addEventListener('mousemove', e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 15;
-  const y = (e.clientY / window.innerHeight - 0.5) * -15;
-  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-});
+window.loadMessages = loadMessages;
 </script>
+
 </body>
 </html>
