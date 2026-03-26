@@ -1,279 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@xtroas</title>
-<link rel="icon" href="https://www.xtroas.xyz/favicon.ico">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Portfolio</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            color: #333;
+        }
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  width: 100vw;
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #000;
-}
+        h1, h2, h3 {
+            margin: 0;
+        }
 
-/* YOUTUBE BACKGROUND (same behavior as video tag) */
-#bgVideo {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  pointer-events: none;
-  overflow: hidden;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-#bgVideo iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 177.77vh; /* 16:9 ratio */
-  height: 100vh;
-  transform: translate(-50%, -50%);
-}
+        /* Navigation */
+        header {
+            background: #111;
+            color: white;
+            padding-bottom: 80px;
+        }
 
-/* overlay */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(3px);
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
 
-.app {
-  position: relative;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1000px;
-}
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-.blurred {
-  filter: blur(14px);
-  pointer-events: none;
-  user-select: none;
-}
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
 
-/* gate */
-.gate {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  z-index: 50;
-}
-.gate.hide {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .35s ease, visibility .35s step-end;
-}
-.gate-inner {
-  padding: 28px 36px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 20px 80px rgba(0,0,0,0.4);
-  text-align: center;
-}
-.gate-title {
-  font-size: clamp(22px, 4vw, 32px);
-  font-weight: 800;
-}
+        .nav-links a {
+            color: white;
+            font-weight: 500;
+        }
 
-/* card */
-.card {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(6px);
-  border-radius: 20px;
-  padding: 30px 40px;
-  width: 90%;
-  max-width: 500px;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out;
-}
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-top: 60px;
+        }
 
-.profile-link {
-  text-decoration: none;
-  color: inherit;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
+        .hero h2 {
+            font-size: 2.5rem;
+        }
 
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,0.3);
-  margin-bottom: 10px;
-}
+        .hero span {
+            color: #4da3ff;
+        }
 
-h1 {
-  font-size: 1.8em;
-  margin: 5px 0;
-  font-weight: 700;
-}
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #4da3ff;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
 
-.discord-username {
-  color: #ccc;
-  font-size: 0.95em;
-  margin-bottom: 10px;
-}
+        .btn.small {
+            padding: 8px 15px;
+        }
 
-.socials {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 15px;
-}
+        /* Sections */
+        .section {
+            padding: 80px 40px;
+            text-align: center;
+        }
 
-.social-bubble {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
 
-.social-bubble img {
-  width: 30px;
-  height: 30px;
-}
+        .project-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
 
-.social-bubble:hover {
-  transform: scale(1.15);
-  background: rgba(255,255,255,0.15);
-}
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            color: white;
+        }
 
-/* music bar */
-.music-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 10px 16px;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  background: rgba(0,0,0,0.65);
-  border-top: 1px solid rgba(255,255,255,0.12);
-  backdrop-filter: blur(8px);
-  z-index: 20;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .35s ease;
-}
-.music-bar.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.music-button {
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.10);
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
-  cursor: pointer;
-}
-</style>
+        /* Responsive tweak */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- YOUTUBE BACKGROUND -->
-<div id="bgVideo">
-  <iframe
-    src="https://www.youtube.com/watch?v=dcY-rhLpHb4&list=RDdcY-rhLpHb4&start_radio=1"
-    frameborder="0"
-    allow="autoplay; fullscreen"
-    allowfullscreen>
-  </iframe>
-</div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <h1 class="logo">xtroas</h1>
+            <ul class="nav-links">
+            </ul>
+        </nav>
 
-<!-- Gate -->
-<div id="gate" class="gate">
-  <div class="gate-inner">
-    <div class="gate-title">Click to enter</div>
-  </div>
-</div>
+        <div class="hero">
+            <h2>Hello, I'm <span>xtroas</span></h2>
+            <p>Roblox Scripter • Roblox VFX Designer • Roblox Modeler</p>
+            <a href="#projects" class="btn">View My Work</a>
+        </div>
+    </header>
 
-<div id="app" class="app blurred">
-  <div class="overlay"></div>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>
+            I have been working on roblox games for years and have lots of experience with roblox studio and know almost anything.
+        </p>
+    </section>
 
-  <div class="card" id="card">
-    <a class="profile-link" href="https://discord.com/users/1239153644625199155" target="_blank">
-      <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1239153644625199155/2e3cf6609d2e3b20554ba5c401c9dc48.webp?size=1024">
-      <h1>xtroas</h1>
-    </a>
-    <div class="discord-username">@xevrin2019</div>
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <h2>Projects</h2>
 
-    <div class="socials">
-      <a href="https://t.me/xtroas" target="_blank" class="social-bubble">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
-      </a>
-      <a href="https://discord.gg/hematite" target="_blank" class="social-bubble">
-        <img src="https://freelogopng.com/images/all_img/1691730813discord-icon-png.png">
-      </a>
-    </div>
-  </div>
-</div>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Ro-Streets - Roblox Game</h3>
+                <p>The companys and businesses and billboards on the game are done by me!</p>
+            </div>
 
-<audio id="bg-music" src="https://files.catbox.moe/3laaw2.mp3" preload="auto" loop></audio>
+            <div class="project-card">
+                <h3>2048 Merge Blocks - Roblox Game</h3>
+                <p>I helped work on the functionality of this game</p>
+            </div>
 
-<div class="music-bar" id="musicBar">
-  <button id="music-toggle" class="music-button">Pause Music</button>
-</div>
+            <div class="project-card">
+                <h3>Unexpected Handling - Roblox Game</h3>
+                <p>I worked on 13 of the levels on this game with other developers</p>
+            </div>
+        </div>
+    </section>
 
-<script>
-const gate=document.getElementById('gate');
-const app=document.getElementById('app');
-const musicBar=document.getElementById('musicBar');
-const music=document.getElementById('bg-music');
-const toggle=document.getElementById('music-toggle');
-const card=document.getElementById('card');
 
-gate.addEventListener('click',()=>{
-  gate.classList.add('hide');
-  app.classList.remove('blurred');
-  musicBar.classList.add('active');
-  music.play().catch(()=>{});
-});
-
-toggle.addEventListener('click',()=>{
-  if(music.paused){music.play();toggle.textContent='Pause Music';}
-  else{music.pause();toggle.textContent='Play Music';}
-});
-
-document.addEventListener('mousemove',e=>{
-  const x=(e.clientX/window.innerWidth-.5)*15;
-  const y=(e.clientY/window.innerHeight-.5)*-15;
-  card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
-});
-</script>
+    <footer>
+        <p>© 2026 Xtroas — All Rights Reserved</p>
+    </footer>
 
 </body>
 </html>
-
-
