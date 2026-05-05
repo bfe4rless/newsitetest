@@ -1,173 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xtroas</title>
-    <style>
-        /* Global Styles */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            color: #333;
-        }
+<!-- saved from url=(0025)https://wizardshop.group/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Available site domains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg-color: #020617;
+      --card-bg: rgba(15, 23, 42, 0.96);
+      --card-border: rgba(148, 163, 184, 0.45);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.2);
+      --radius-xl: 22px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --transition-fast: 0.18s ease-out;
+    }
 
-        h1, h2, h3 {
-            margin: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      color: var(--text-main);
+    }
 
-        /* Navigation */
-        header {
-            background: #111;
-            color: white;
-            padding-bottom: 80px;
-        }
+    .page {
+  width: 100%;
+  max-width: 1100px; /* Увеличена ширина контейнера */
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.09), transparent 60%),
+    radial-gradient(circle at top right, rgba(129, 140, 248, 0.18), transparent 60%),
+    var(--card-bg);
+  border-radius: 26px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  padding: 22px 20px 20px;
+  backdrop-filter: blur(18px);
+}
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-        }
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+      .page {
+        padding: 18px 14px 16px;
+        border-radius: 18px;
+      }
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
+    header {
+      margin-bottom: 18px;
+    }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
 
-        .nav-links a {
-            color: white;
-            font-weight: 500;
-        }
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+    }
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-top: 60px;
-        }
+    h1 {
+      font-size: clamp(24px, 3.5vw, 28px);
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #e5e7eb, #c4b5fd, #a5b4fc);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
-        .hero h2 {
-            font-size: 2.5rem;
-        }
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 460px;
+      line-height: 1.6;
+    }
 
-        .hero span {
-            color: #4da3ff;
-        }
+    .card {
+      margin-top: 18px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--card-border);
+      background:
+        radial-gradient(circle at top, rgba(37, 99, 235, 0.35), transparent 65%),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.97));
+      padding: 16px 14px 14px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #4da3ff;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      pointer-events: none;
+      opacity: 0.7;
+    }
 
-        .btn.small {
-            padding: 8px 15px;
-        }
+    .card-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #c7d2fe;
+      margin-bottom: 10px;
+    }
 
-        /* Sections */
-        .section {
-            padding: 80px 40px;
-            text-align: center;
-        }
+    .domain-list {
+      display: flex;
+  flex-direction: column;
+  gap: 8px;
+    }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
+    @media (min-width: 540px) {
+      .domain-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
 
-        .project-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+    .domain {
+      width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background:
+    radial-gradient(circle at top right, var(--accent-soft), transparent 55%),
+    rgba(15, 23, 42, 0.96);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.9);
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out,
+              border-color 0.18s ease-out, background 0.18s ease-out;
+    }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #111;
-            color: white;
-        }
+    .domain:hover {
+      transform: translateY(-1px);
+  box-shadow: 0 0 32px rgba(129, 140, 248, 0.55);
+  border-color: rgba(191, 219, 254, 0.95);
+    }
 
-        /* Responsive tweak */
-        @media (max-width: 600px) {
-            nav {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+    .domain-url {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* ← важное добавление! */
+}
+
+    .domain-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      padding: 3px 7px;
+      background: rgba(15, 23, 42, 0.9);
+      white-space: nowrap;
+    }
+
+    .domain-label--primary {
+      border-color: rgba(52, 211, 153, 0.8);
+      color: #bbf7d0;
+      background: rgba(21, 128, 61, 0.28);
+    }
+    
+.domain-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 11px;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0; 
+}
+
+    .domain-label--tor {
+      border-color: rgba(248, 250, 252, 0.8);
+    }
+
+    .tips {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      border-radius: 16px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px 11px;
+      margin-top:10px;
+    }
+
+    .tips-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .tips ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .tips li {
+      margin-bottom: 4px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .tips-bullet {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      margin-top: 6px;
+      background: var(--accent);
+    }
+
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 11px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <!-- Header -->
+  <main class="page fade-in">
     <header>
-        <nav>
-            <h1 class="logo">xtroas</h1>
-            <ul class="nav-links">
-            </ul>
-        </nav>
-
-        <div class="hero">
-            <h2>Hello, I'm <span>xtroas</span></h2>
-            <p>Roblox Scripter • Roblox VFX Designer • Roblox Modeler</p>
-            <a href="#projects" class="btn">View My Work</a>
-        </div>
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span>The sites I use</span>
+      </div>
+      <h1>Sites for dumps, ccs and enrolls</h1>
+      <p class="subtitle">
+        Your welcome :)
+      </p>
     </header>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-        <h2>About Me</h2>
-        <p>
-            I have been working on roblox games for years and have lots of experience with roblox studio and know almost anything.
-        </p>
-    </section>
+    <section class="card">
+      <h2 class="card-title">Domain list</h2>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <h2>Projects</h2>
-
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Ro-Streets - Roblox Game</h3>
-                <p>The companys and businesses and billboards on the game are done by me!</p>
-            </div>
-
-            <div class="project-card">
-                <h3>2048 Merge Blocks - Roblox Game</h3>
-                <p>I helped work on the functionality of this game</p>
-            </div>
-
-            <div class="project-card">
-                <h3>Unexpected Handling - Roblox Game</h3>
-                <p>I worked on 13 of the levels on this game with other developers</p>
-            </div>
+      <div class="domain-list">
+	<div class="domain">
+	    <a href="https://recroom.cc/#" class="domain-link">
+		<span class="domain-url">https://recroom.cc</span>
+		<span class="domain-label domain-label--primary">mirror</span>
+	    </a>
+	</div>
+	<div class="domain">
+	    <a href="https://prozone.cc/#" class="domain-link">
+		<span class="domain-url">https://prozone.cc</span>
+		<span class="domain-label domain-label--primary">mirror</span>
+	    </a>
+	</div>
+        <div class="domain">
+	    <a href="Paypal bot" class="domain-link">
+		<span class="domain-url">https://copp.xo.je</span>
+		<span class="domain-label domain-label--tor">tor</span>
+	    </a>
         </div>
-    </section>
+      </div>
 
 
-    <footer>
-        <p>© 2026 Xtroas — All Rights Reserved</p>
-    </footer>
-
-</body>
-</html>
+</body></html>
