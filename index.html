@@ -10,7 +10,9 @@
 <style>
 /* Layout: one calm column, orbital mark as the living centerpiece; it spins faster while Gemini thinks. */
 :root{
-  --bg:#F3F4F1; --surface:#FFFFFF; --ink:#16181C; --muted:#6C707A; --line:#DFE1DC;
+  --bg-base:#F3F4F1;
+  --bg-grad: radial-gradient(circle at 15% 50%, rgba(217, 130, 43, 0.05), transparent 50%), radial-gradient(circle at 85% 30%, rgba(217, 130, 43, 0.03), transparent 50%);
+  --surface:#FFFFFF; --ink:#16181C; --muted:#6C707A; --line:#DFE1DC;
   --accent:#D9822B; --accent-soft:#F4E2CE; --side:#EAEBE7; --user:#16181C; --user-ink:#F3F4F1;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -19,21 +21,25 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0E0F12; --surface:#16181D; --ink:#ECEDEA; --muted:#8B8F99; --line:#24272E;
-  --accent:#F0A04B; --accent-soft:#2B2116; --side:#0A0B0D; --user:#ECEDEA; --user-ink:#0E0F12; color-scheme:dark}}
+  --bg-base:#0E0F12;
+  --bg-grad: radial-gradient(circle at 15% 50%, rgba(240, 160, 75, 0.06), transparent 50%), radial-gradient(circle at 85% 30%, rgba(240, 160, 75, 0.04), transparent 50%);
+  --surface:#16181D; --ink:#ECEDEA; --muted:#8B8F99; --line:#24272E;
+  --accent:#F0A04B; --accent-soft:#2B2116; --side:rgba(10, 11, 13, 0.7); --user:#ECEDEA; --user-ink:#0E0F12; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E0F12; --surface:#16181D; --ink:#ECEDEA; --muted:#8B8F99; --line:#24272E;
-  --accent:#F0A04B; --accent-soft:#2B2116; --side:#0A0B0D; --user:#ECEDEA; --user-ink:#0E0F12; color-scheme:dark}
+  --bg-base:#0E0F12;
+  --bg-grad: radial-gradient(circle at 15% 50%, rgba(240, 160, 75, 0.06), transparent 50%), radial-gradient(circle at 85% 30%, rgba(240, 160, 75, 0.04), transparent 50%);
+  --surface:#16181D; --ink:#ECEDEA; --muted:#8B8F99; --line:#24272E;
+  --accent:#F0A04B; --accent-soft:#2B2116; --side:rgba(10, 11, 13, 0.7); --user:#ECEDEA; --user-ink:#0E0F12; color-scheme:dark}
 
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg-grad),var(--bg-base);background-attachment:fixed;color:var(--ink);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased;
   display:flex;overflow:hidden;transition:background .4s var(--ease),color .4s var(--ease)}
 .app{flex:1;min-width:0;display:flex;flex-direction:column;height:100%}
 
 /* Splash Screen */
 #splash {
-  position: fixed; inset: 0; z-index: 9999; background: var(--bg);
+  position: fixed; inset: 0; z-index: 9999; background:var(--bg-grad),var(--bg-base);background-attachment:fixed;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
 }
@@ -62,7 +68,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--body);-w
 .splash-note:hover { color: var(--ink); }
 
 /* Saved chats sidebar */
-aside{width:268px;flex:none;height:100%;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;
+aside{width:268px;flex:none;height:100%;background:var(--side);backdrop-filter:blur(12px);border-right:1px solid var(--line);display:flex;flex-direction:column;
   padding:max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
   transition:margin-left .45s var(--ease),transform .45s var(--ease)}
 body.side-closed aside{margin-left:-268px}
@@ -91,11 +97,11 @@ body.side-closed aside{margin-left:-268px}
 @media (max-width:820px){
   aside{position:fixed;inset:0 auto 0 0;z-index:30;transform:translateX(-100%);margin-left:0!important;box-shadow:20px 0 60px -30px rgba(0,0,0,.5)}
   body.side-open aside{transform:none}
-  .scrim{display:block;position:fixed;inset:0;z-index:29;background:color-mix(in srgb,var(--bg) 50%,transparent);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
+  .scrim{display:block;position:fixed;inset:0;z-index:29;background:color-mix(in srgb,var(--bg-base) 50%,transparent);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
   body.side-open .scrim{opacity:1;pointer-events:auto}
 }
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+:focus-visible{outline:none;}
 svg{display:block}
 
 /* Top bar */
@@ -140,7 +146,7 @@ main{flex:1;overflow-y:auto;scroll-behavior:smooth}
 /* Messages */
 .msg{display:flex;gap:14px;animation:rise .5s var(--ease) both;min-width:0}
 .msg.user{justify-content:flex-end}
-.msg.user .bubble{background:var(--user);color:var(--user-ink);padding:10px 16px;border-radius:18px 18px 4px 18px;max-width:80%;white-space:pre-wrap;word-wrap:break-word}
+.msg.user .bubble{background:var(--user);color:var(--user-ink);padding:10px 16px;border-radius:18px 18px 4px 18px;max-width:80%;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 4px 12px -4px rgba(0,0,0,0.1)}
 .msg.ai .av{flex:none;--s:28px;margin-top:2px}
 .msg.ai .body{min-width:0;flex:1}
 .prose>*:first-child{margin-top:0}.prose>*:last-child{margin-bottom:0}
@@ -151,7 +157,7 @@ main{flex:1;overflow-y:auto;scroll-behavior:smooth}
 .prose li{margin:.2em 0}
 .prose a{color:var(--accent)}
 .prose code{font:13px var(--mono);background:var(--accent-soft);padding:1px 6px;border-radius:6px}
-.prose pre{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;margin:.8em 0}
+.prose pre{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;margin:.8em 0;box-shadow:0 4px 12px -8px rgba(0,0,0,0.05)}
 .prose pre code{background:none;padding:0;font-size:13px;line-height:1.55}
 .prose blockquote{margin:.6em 0;padding-left:14px;border-left:2px solid var(--accent);color:var(--muted)}
 .cursor{display:inline-block;width:7px;height:15px;background:var(--accent);vertical-align:-2px;margin-left:2px;border-radius:2px;animation:blink 1s steps(2) infinite}
@@ -176,6 +182,22 @@ main{flex:1;overflow-y:auto;scroll-behavior:smooth}
 
 /* Composer */
 footer{padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.composer-dock{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+
+.file-chip{
+  display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);
+  padding:8px 12px;border-radius:12px;font-size:13px;width:fit-content;color:var(--ink);
+  box-shadow:0 4px 12px -4px rgba(0,0,0,0.05);animation:rise .3s var(--ease) both;
+}
+.file-chip svg{color:var(--muted)}
+.file-chip .file-name{font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip .remove-file{
+  display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;
+  background:var(--line);color:var(--ink);cursor:pointer;transition:background .2s;
+}
+.file-chip .remove-file:hover{background:var(--muted);color:var(--bg-base)}
+.file-chip .remove-file svg{color:currentColor;transform:translateY(0.5px)}
+
 .composer{display:flex;align-items:flex-end;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:8px 8px 8px 18px;
   box-shadow:0 10px 40px -18px rgba(0,0,0,.25);transition:border-color .25s,box-shadow .25s}
 .composer:focus-within{border-color:var(--line)}
@@ -188,7 +210,7 @@ footer{padding-bottom:max(18px,env(safe-area-inset-bottom))}
 .dock:focus-within + .hint{opacity:0}
 textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:transparent;color:var(--ink);font:15px/1.5 var(--body);padding:8px 0;max-height:200px}
 textarea::placeholder{color:var(--muted)}
-.send{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:var(--ink);color:var(--bg);flex:none;transition:transform .25s var(--ease),opacity .2s}
+.send{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:var(--ink);color:var(--bg-base);flex:none;transition:transform .25s var(--ease),opacity .2s}
 .send:hover{transform:scale(1.05)}
 .send:disabled{opacity:.3;transform:none;cursor:default}
 .hint{text-align:center;font:11px var(--mono);color:var(--muted);letter-spacing:.04em;margin-top:12px}
@@ -229,7 +251,9 @@ textarea::placeholder{color:var(--muted)}
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M4 20h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-enter" viewBox="0 0 24 24"><path d="M9 10H15C16.1046 10 17 10.8954 17 12V17M9 10L13 14M9 10L13 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="M21 11.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2.5M16 11.5l-4 4-4-4M12 15.5V4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-7-7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13 2v7h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
 <!-- Splash Screen -->
@@ -279,16 +303,19 @@ textarea::placeholder{color:var(--muted)}
 <main id="scroller"><div class="col"><div id="feed"></div></div></main>
 
 <footer><div class="col">
+  <div class="composer-dock" id="composerDock">
+    <!-- File chip will be injected here -->
+  </div>
   <div class="dock">
-  <form class="composer" id="form">
-    <label class="iconbtn" style="cursor:pointer; margin-bottom: 4px;" title="Upload file">
-      <svg width="18" height="18"><use href="#i-paperclip"/></svg>
-      <input type="file" id="fileInput" style="display:none;" accept=".txt,.json,.csv,.md,.js,.html,.css,.py,.cpp,.h,.c">
-    </label>
-    <textarea id="input" rows="1" placeholder="Type a command..." autofocus></textarea>
-    <button class="send" id="send" type="submit" aria-label="Send" disabled><svg width="18" height="18"><use href="#i-send"/></svg></button>
-  </form>
-  <div class="glow" aria-hidden="true"></div>
+    <form class="composer" id="form">
+      <label class="iconbtn" style="cursor:pointer; margin-bottom: 4px;" title="Upload file">
+        <svg width="20" height="20"><use href="#i-upload"/></svg>
+        <input type="file" id="fileInput" style="display:none;" accept=".txt,.json,.csv,.md,.js,.html,.css,.py,.cpp,.h,.c">
+      </label>
+      <textarea id="input" rows="1" placeholder="Type a command..." autofocus></textarea>
+      <button class="send" id="send" type="submit" aria-label="Send" disabled><svg width="18" height="18"><use href="#i-send"/></svg></button>
+    </form>
+    <div class="glow" aria-hidden="true"></div>
   </div>
   <div class="hint">Enter to send · Shift + Enter for a new line</div>
 </div></footer>
@@ -301,11 +328,34 @@ const API_ENDPOINT = "/api/chat";
 
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), input = $("#input"), send = $("#send"), form = $("#form"), scroller = $("#scroller");
-const fileInput = $("#fileInput");
+const fileInput = $("#fileInput"), composerDock = $("#composerDock");
 const store = { get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}} };
 
 // File upload state
 let currentFile = null;
+
+function renderFileChip() {
+  composerDock.innerHTML = "";
+  if (!currentFile) return;
+
+  const chip = document.createElement("div");
+  chip.className = "file-chip";
+  chip.innerHTML = `
+    <svg width="16" height="16"><use href="#i-file"/></svg>
+    <span class="file-name">${esc(currentFile.name)}</span>
+    <button class="remove-file" type="button" title="Remove file">
+      <svg width="12" height="12"><use href="#i-x"/></svg>
+    </button>
+  `;
+  
+  chip.querySelector(".remove-file").onclick = () => {
+    currentFile = null;
+    fileInput.value = "";
+    renderFileChip();
+  };
+
+  composerDock.appendChild(chip);
+}
 
 fileInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -323,7 +373,7 @@ fileInput.addEventListener("change", (e) => {
       name: file.name,
       content: e.target.result
     };
-    input.value = `[Attached: ${file.name}]\n` + input.value;
+    renderFileChip();
     autosize();
   };
   reader.readAsText(file);
