@@ -1,7 +1,7 @@
 // api/chat.js — Vercel Serverless Function (runs on the server, never in the browser)
 //
 // The browser only ever talks to /api/chat. The API key, the model names, AND
-// the system prompt all live here on the server, so a visitor inspecting the
+// the system prompts all live here on the server, so a visitor inspecting the
 // site (View Source or the Network tab) sees nothing but their own messages.
 
 export const config = { runtime: 'edge' };
@@ -146,7 +146,6 @@ function json(obj, status) {
 export default async function handler(req) {
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
-  // Accept the key under either name, so it works whichever you set in Vercel.
   const key = process.env.MODEL_API_KEY || process.env.GEMINI_API_KEY;
   if (!key) return json({ error: 'Server is missing the API key.' }, 500);
 
