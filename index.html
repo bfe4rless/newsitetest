@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>XtroasGPT</title>
+<link rel="icon" type="image/png" href="https://filevaulthosting.lovable.app/files/image.png?s=5YyscM">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* Layout: one calm column, orbital mark as the living centerpiece; it spins faster while Gemini thinks. */
 :root{
   --bg-base:#F3F4F1;
   --bg-grad: radial-gradient(circle at 15% 50%, rgba(217, 130, 43, 0.05), transparent 50%), radial-gradient(circle at 85% 30%, rgba(217, 130, 43, 0.03), transparent 50%);
@@ -134,14 +134,9 @@ main{flex:1;overflow-y:auto;scroll-behavior:smooth}
 .chip b{display:block;font-weight:500;font-size:14px}
 .chip span{display:block;color:var(--muted);font-size:13px;line-height:1.4}
 
-/* Orbit mark */
-.orbit{width:var(--s,96px);height:var(--s,96px);color:var(--ink)}
-.orbit .ring{transform-origin:50% 50%;animation:spin 18s linear infinite}
-.orbit .ring2{transform-origin:50% 50%;animation:spin 28s linear infinite reverse}
-.orbit .sat{fill:var(--accent)}
-.orbit .core{fill:var(--ink)}
-.thinking .orbit .ring{animation-duration:1.6s}
-.thinking .orbit .ring2{animation-duration:2.6s}
+/* Logo mark */
+.logo-mark{width:auto;height:var(--s,96px);object-fit:contain;}
+.thinking .logo-mark{animation: pulse 1.5s infinite ease-in-out;}
 
 /* Messages */
 .msg{display:flex;gap:14px;animation:rise .5s var(--ease) both;min-width:0}
@@ -165,6 +160,15 @@ main{flex:1;overflow-y:auto;scroll-behavior:smooth}
 .msg.ai:hover .actions,.msg.ai:focus-within .actions{opacity:1}
 .actions .iconbtn{width:30px;height:30px}
 .err{color:#C2412D;font-size:14px}
+
+/* Thinking Block */
+.thinking-block { margin-bottom: 16px; border-left: 2px solid var(--line); padding-left: 12px; }
+.thinking-header { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; font-family: var(--mono); }
+.thinking-header svg { transition: transform .2s; }
+.thinking-header.open svg { transform: rotate(90deg); }
+.thinking-content { display: none; font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.5; white-space: pre-wrap; }
+.thinking-content.open { display: block; animation: pop .3s var(--ease); }
+.thinking-spinner { width: 14px; height: 14px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
 
 /* Code block actions */
 .code-block-wrap { position: relative; margin: .8em 0; }
@@ -215,8 +219,8 @@ textarea::placeholder{color:var(--muted)}
 .send:disabled{opacity:.3;transform:none;cursor:default}
 .hint{text-align:center;font:11px var(--mono);color:var(--muted);letter-spacing:.04em;margin-top:12px}
 
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
 @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
-
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes blink{50%{opacity:0}}
@@ -227,12 +231,6 @@ textarea::placeholder{color:var(--muted)}
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-orbit" viewBox="0 0 100 100">
-    <g class="ring2"><ellipse cx="50" cy="50" rx="44" ry="17" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".35" transform="rotate(-28 50 50)"/></g>
-    <g class="ring"><ellipse cx="50" cy="50" rx="44" ry="17" fill="none" stroke="currentColor" stroke-width="1.6" transform="rotate(32 50 50)"/>
-      <circle class="sat" cx="87.3" cy="73.3" r="5.5"/></g>
-    <circle class="core" cx="50" cy="50" r="11"/>
-  </symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor"/></symbol>
   <symbol id="i-new" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
@@ -254,6 +252,7 @@ textarea::placeholder{color:var(--muted)}
   <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-file" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-7-7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13 2v7h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
 <!-- Splash Screen -->
@@ -279,7 +278,7 @@ textarea::placeholder{color:var(--muted)}
 
 <aside id="side" aria-label="Saved chats">
   <div class="side-top">
-    <div class="brand"><svg class="orbit" style="--s:24px"><use href="#i-orbit"/></svg>XtroasGPT</div>
+    <div class="brand"><img class="logo-mark" style="--s:24px" src="https://filevaulthosting.lovable.app/files/image.png?s=5YyscM" alt="Logo">XtroasGPT</div>
     <button class="iconbtn" id="sideClose" aria-label="Close sidebar"><svg width="18" height="18"><use href="#i-panel"/></svg></button>
   </div>
   <button class="newbtn" id="sideNew"><svg width="18" height="18"><use href="#i-new"/></svg>New chat</button>
@@ -291,7 +290,11 @@ textarea::placeholder{color:var(--muted)}
 <header>
   <div class="left">
     <button class="iconbtn" id="sideOpen" aria-label="Show saved chats"><svg width="18" height="18"><use href="#i-panel"/></svg></button>
-    <div class="brand" id="topBrand"><svg class="orbit" style="--s:26px"><use href="#i-orbit"/></svg>XtroasGPT <small>3.5 Flash Lite</small></div>
+    <div class="brand" id="topBrand">
+      <img class="logo-mark" style="--s:26px" src="https://filevaulthosting.lovable.app/files/image.png?s=5YyscM" alt="Logo">
+      XtroasGPT 
+      <small id="modelBadge">XTROAS REGULAR</small>
+    </div>
   </div>
   <div class="tools">
     <button class="iconbtn" id="changeModelBtn" aria-label="Change Model" title="Change Model"><svg width="18" height="18"><use href="#i-sliders"/></svg></button>
@@ -325,10 +328,12 @@ textarea::placeholder{color:var(--muted)}
 const GREETING_UNCENSORED = "Welcome to Xtroas AI :)";
 const GREETING_REGULAR = "Welcome to Xtroas GPT";
 const API_ENDPOINT = "/api/chat";
+const LOGO_URL = "https://filevaulthosting.lovable.app/files/image.png?s=5YyscM";
+const ICON_URL = "https://filevaulthosting.lovable.app/files/image.png?s=XZHCKE";
 
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), input = $("#input"), send = $("#send"), form = $("#form"), scroller = $("#scroller");
-const fileInput = $("#fileInput"), composerDock = $("#composerDock");
+const fileInput = $("#fileInput"), composerDock = $("#composerDock"), modelBadge = $("#modelBadge");
 const store = { get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}} };
 
 // File upload state
@@ -382,6 +387,14 @@ fileInput.addEventListener("change", (e) => {
 // Splash Logic
 let currentMode = store.get("xtroas.mode", null);
 
+function updateBadge() {
+  if (currentMode === 'uncensored') {
+    modelBadge.textContent = "XTROAS UNCENSORED";
+  } else {
+    modelBadge.textContent = "XTROAS REGULAR";
+  }
+}
+
 $("#splash-info").onclick = () => {
   const desc = $("#splash-desc");
   desc.style.display = desc.style.display === "none" ? "block" : "none";
@@ -390,6 +403,7 @@ $("#splash-info").onclick = () => {
 function initMode(mode) {
   currentMode = mode;
   store.set("xtroas.mode", mode);
+  updateBadge();
   
   $("#splash").classList.add("hidden");
   
@@ -406,6 +420,9 @@ document.getElementById("choose-regular").onclick = () => initMode('regular');
 
 if (currentMode) {
   $("#splash").classList.add("hidden");
+  updateBadge();
+} else {
+  modelBadge.textContent = "XTROAS GPT";
 }
 
 const getGreeting = () => currentMode === 'uncensored' ? GREETING_UNCENSORED : GREETING_REGULAR;
@@ -487,7 +504,7 @@ const SUGGESTIONS_REGULAR=[
 function heroHTML(){
   const suggestions = currentMode === 'uncensored' ? SUGGESTIONS_UNCENSORED : SUGGESTIONS_REGULAR;
   return `<section class="hero">
-    <svg class="orbit" style="--s:92px"><use href="#i-orbit"/></svg>
+    <img class="logo-mark" style="--s:92px" src="${ICON_URL}" alt="Logo">
     <h1>Type a <em>command</em> to start</h1>
     <p>${currentMode === 'uncensored' ? 'Ask about memory, reverse engineering, or paste a layout.' : 'Ask about coding, Blender, games, or general knowledge.'}</p>
     <div class="chips">${suggestions.map((s,n)=>`<button class="chip" data-n="${n}"><svg width="18" height="18"><use href="#${s.i}"/></svg><div><b>${s.t}</b><span>${s.d}</span></div></button>`).join("")}</div>
@@ -528,7 +545,7 @@ function wireCodeActions(prose){
 }
 function addAI(text=""){
   const el=document.createElement("div"); el.className="msg ai";
-  el.innerHTML=`<svg class="orbit av"><use href="#i-orbit"/></svg><div class="body"><div class="prose"></div>
+  el.innerHTML=`<img class="logo-mark av" style="--s:28px; margin-top:2px;" src="${LOGO_URL}" alt="AI"><div class="body"><div class="prose"></div>
     <div class="actions"><button class="iconbtn" data-a="copy" aria-label="Copy"><svg width="16" height="16"><use href="#i-copy"/></svg></button>
     <button class="iconbtn" data-a="retry" aria-label="Regenerate"><svg width="16" height="16"><use href="#i-retry"/></svg></button></div></div>`;
   const prose = el.querySelector(".prose");
@@ -555,9 +572,9 @@ const RETRYABLE=new Set([429,500,502,503,504]);
 class ModelError extends Error{ constructor(msg,status){ super(msg); this.status=status; } }
 const wait=(ms,run)=>new Promise(r=>{ const t=setTimeout(r,ms); run.onStop.push(()=>{clearTimeout(t);r();}); });
 
-async function stream(onText, run){
+async function stream(onText, run, thinkTime) {
   let res;
-  try{ 
+  try { 
     const payload = {
       mode: currentMode,
       contents: history.filter(m=>!m.greet).map(m=>({role:m.role==="user"?"user":"model",parts:[{text:m.text}]}))
@@ -567,15 +584,25 @@ async function stream(onText, run){
       payload.file = currentFile;
     }
 
-    res=await fetch(API_ENDPOINT,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
+    res = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
     }); 
   }
-  catch(e){ throw new ModelError("Couldn't reach the server. Check your internet connection and try again.",0); }
-  if(run.stopped) return;
-  if(!res.ok){ let msg=`Request failed (${res.status}).`; try{const j=await res.json(); msg=(typeof j.error==="string"?j.error:j.error?.message)||msg;}catch{} throw new ModelError(msg,res.status); }
+  catch(e) { throw new ModelError("Couldn't reach the server. Check your internet connection and try again.", 0); }
+  
+  if (run.stopped) return;
+  if (!res.ok) { let msg=`Request failed (${res.status}).`; try{const j=await res.json(); msg=(typeof j.error==="string"?j.error:j.error?.message)||msg;}catch{} throw new ModelError(msg,res.status); }
+  
+  // Fake the thinking process for the calculated duration before showing the response
+  await new Promise(r => {
+    const t = setTimeout(r, thinkTime);
+    run.onStop.push(() => { clearTimeout(t); r(); });
+  });
+  
+  if (run.stopped) return;
+
   const reader=res.body.getReader(), dec=new TextDecoder(); let buf="";
   run.onStop.push(()=>reader.cancel().catch(()=>{}));
   while(!run.stopped){
@@ -592,31 +619,67 @@ async function stream(onText, run){
 
 async function respond(){
   setBusy(true);
-  const el=addAI(""), prose=el.querySelector(".prose"); let text="", done=false;
+  const el=addAI(""), prose=el.querySelector(".prose"); 
+  let text="", done=false;
+
+  // Calculate fake think time based on prompt length (max 60s)
+  const lastUserMsg = history.filter(m=>m.role==="user").pop();
+  const promptLength = lastUserMsg ? lastUserMsg.text.length : 10;
+  const thinkTime = Math.min(60000, Math.max(2000, promptLength * 100));
+
+  const thinkingBlock = document.createElement("div");
+  thinkingBlock.className = "thinking-block";
+  thinkingBlock.innerHTML = `
+    <div class="thinking-header">
+      <svg width="14" height="14"><use href="#i-chevron-right"/></svg>
+      <div class="thinking-spinner"></div>
+      <span>Thinking...</span>
+    </div>
+    <div class="thinking-content">
+      Analyzing request parameters...<br>
+      Formulating response structure...<br>
+      Compiling final output...
+    </div>
+  `;
+  
+  const header = thinkingBlock.querySelector(".thinking-header");
+  const content = thinkingBlock.querySelector(".thinking-content");
+  const spinner = thinkingBlock.querySelector(".thinking-spinner");
+  
+  header.onclick = () => {
+    header.classList.toggle("open");
+    content.classList.toggle("open");
+  };
+
+  prose.appendChild(thinkingBlock);
+  toBottom();
+
   const run={stopped:false,onStop:[]};
   const status=msg=>{ if(!text) prose.innerHTML=`<p style="color:var(--muted);font-size:13px;margin:0">${esc(msg)}</p><span class="cursor"></span>`; };
-  prose.innerHTML='<span class="cursor"></span>'; toBottom();
-
+  
   const finish=(errMsg)=>{
     if(done) return; done=true;
+    if(thinkingBlock.isConnected) thinkingBlock.remove();
+    
     if(text){ prose.innerHTML=md(text); el.dataset.raw=text; wireCodeActions(prose); history.push({role:"model",text}); saveChat(); }
     if(errMsg) prose.innerHTML=(text?md(text):"")+`<p class="err">${esc(errMsg)}</p>`;
     else if(!text) el.remove();
     controller=null; setBusy(false);
   };
+  
   controller={ abort(){ run.stopped=true; run.onStop.splice(0).forEach(f=>f()); finish(); } };
 
   const tries=4; let lastErr=null, anyBusy=false;
   for(let n=0;n<tries && !run.stopped;n++){
     try{
-      await stream(t=>{ text+=t; prose.innerHTML=md(text)+'<span class="cursor"></span>'; el.dataset.raw=text; nearBottom()&&toBottom(false); }, run);
+      await stream(t=>{ text+=t; prose.innerHTML=md(text)+'<span class="cursor"></span>'; el.dataset.raw=text; nearBottom()&&toBottom(false); }, run, thinkTime);
       lastErr=null; break;
     }catch(e){
       lastErr=e;
       const busy=RETRYABLE.has(e.status);
       if(text||!busy||n===tries-1) break;
       anyBusy=true;
-      status(`The model is busy. Trying again (${n+2} of ${tries})…`);
+      status(`The model is busy. Trying again (${n+2} of ${tries})...`);
       await wait(1500*(n+1),run);
     }
   }
@@ -696,6 +759,7 @@ $("#changeModelBtn").onclick = () => {
   store.set("xtroas.mode", null);
   $("#splash").classList.remove("hidden");
   document.getElementById("splash-desc").style.display = "none";
+  modelBadge.textContent = "XTROAS GPT";
 };
 
 if (currentMode) {
